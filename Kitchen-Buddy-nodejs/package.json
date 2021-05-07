@@ -1,0 +1,14 @@
+{
+  "name": "kitchen-buddy",
+  "version": "1.0.0",
+  "description": "E\u0016fficiently entering kitchen ingredients into the application and listing all the available ingredients according to various basic queries.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "kitchen-buddy"
+  ],
+  "author": "Zahid Ali",
+  "license": "ISC"
+}
