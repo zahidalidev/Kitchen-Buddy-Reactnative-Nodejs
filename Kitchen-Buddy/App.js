@@ -15,7 +15,6 @@ import { createDrawerNavigator } from "@react-navigation/drawer"
 import { NavigationContainer } from "@react-navigation/native"
 
 import colors from './app/config/colors';
-import AppDrawer from './app/components/AppDrawer';
 import Login from './app/screens/Login';
 import SignUp from './app/screens/SignUp';
 import Home from './app/screens/Home';
@@ -57,9 +56,8 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="login" drawerType="front" overlayColor="transparent" edgeWidth={100} drawerStyle={{
           backgroundColor: colors.white,
-          width: "75%"
+          width: 0
         }}
-          drawerContent={(props) => <AppDrawer {...props} />}
         >
           <Stack.Screen name="home" >{(props) => <Home {...props} />}</Stack.Screen>
           <Stack.Screen name="login" >{(props) => <Login {...props} />}</Stack.Screen>
