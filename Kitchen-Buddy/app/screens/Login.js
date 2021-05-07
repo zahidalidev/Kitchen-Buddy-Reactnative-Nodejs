@@ -8,7 +8,7 @@ import AppTextInput from '../components/AppTextInput';
 import colors from '../config/colors';
 import AppTextButton from '../components/AppTextButton';
 
-import logo from "../../assets/images/logo2.jpg"
+import logo from "../../assets/images/kitchenLogo.gif"
 
 function Login(props) {
 
@@ -71,7 +71,7 @@ function Login(props) {
                 )}
 
                 {/* Login button */}
-                <View style={{ marginTop: RFPercentage(5), width: "85%", flex: 1, alignItems: "flex-end" }} >
+                <View style={styles.loginButton} >
                     <AppTextButton
                         name="LOGIN"
                         borderRadius={RFPercentage(1.3)}
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: "100%"
     },
+    loginButton: { marginTop: RFPercentage(5), width: "85%", flex: 1, alignItems: "flex-end" }
 })
 
 export default Login;

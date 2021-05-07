@@ -4,6 +4,7 @@ import { Image, StyleSheet, Share, View } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 
 import logo from "../../assets/images/logo.jpg"
+import colors from "../config/colors";
 
 function AppDrawer({ navigation }) {
     const [active, setActive] = React.useState('');
@@ -17,8 +18,8 @@ function AppDrawer({ navigation }) {
 
 
     return (
-        <Drawer.Section  >
-            <View style={{ flexDirection: 'row', padding: RFPercentage(2.4), marginTop: RFPercentage(3) }} >
+        <Drawer.Section >
+            <View style={{ backgroundColor: colors.primary, flexDirection: 'row', padding: RFPercentage(2.4), marginTop: RFPercentage(3) }} >
                 <Image style={{ width: RFPercentage(31.5), height: RFPercentage(6.2) }} source={logo} />
             </View>
             <Divider />

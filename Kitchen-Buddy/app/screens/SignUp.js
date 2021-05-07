@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants'
 import { RFPercentage } from 'react-native-responsive-fontsize';
@@ -8,10 +8,7 @@ import AppTextInput from '../components/AppTextInput';
 import colors from '../config/colors';
 import AppTextButton from '../components/AppTextButton';
 
-import logo from "../../assets/images/logo2.jpg"
-
 function SignUp(props) {
-
     const [feilds, setFeilds] = useState([
         {
             id: 0,
@@ -99,8 +96,8 @@ function SignUp(props) {
             {/* Signup text */}
             <View style={{ width: "100%", backgroundColor: colors.lightGrey }} >
                 <View style={{ marginBottom: RFPercentage(5), marginLeft: "7.5%", width: "85%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center' }} >
-                    <Text style={{ color: "grey", fontSize: RFPercentage(1.7) }} >Dont't have an account? </Text>
-                    <TouchableOpacity onPress={() => props.navigation.navigate('signup')} ><Text style={{ color: colors.primary, fontWeight: "bold", fontSize: RFPercentage(1.7) }} >Sign Up</Text></TouchableOpacity>
+                    <Text style={{ color: "grey", fontSize: RFPercentage(1.7) }} >Already have an account? </Text>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('login')} ><Text style={{ color: colors.primary, fontWeight: "bold", fontSize: RFPercentage(1.7) }} >Sign In</Text></TouchableOpacity>
                 </View>
             </View>
         </View>
