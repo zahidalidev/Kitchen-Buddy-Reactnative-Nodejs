@@ -66,7 +66,7 @@ export default function App() {
           name="Orders"
           component={Home}
           options={{
-            tabBarLabel: 'Add Item',
+            tabBarLabel: 'Add Ingredient',
             tabBarIcon: ({ color, size }) => (
               <Foundation
                 style={{ marginTop: 13 }}
