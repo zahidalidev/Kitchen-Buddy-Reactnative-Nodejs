@@ -34,8 +34,6 @@ function Login(props) {
     }
 
     const handleSubmit = () => {
-        console.log('submited')
-        console.log(feilds)
         props.navigation.navigate('home')
     }
 
