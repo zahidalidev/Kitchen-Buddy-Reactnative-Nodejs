@@ -6,9 +6,8 @@
  * @flow strict-local
  */
 
-import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { RFPercentage } from "react-native-responsive-fontsize"
 import AnimatedSplash from "react-native-animated-splash-screen";
 import { createDrawerNavigator } from "@react-navigation/drawer"
@@ -75,12 +74,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  splashScreen: {
-    flex: 1,
-    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   }
