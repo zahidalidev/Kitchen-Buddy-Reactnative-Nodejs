@@ -111,10 +111,10 @@ function Home(props) {
 
     return (
         <View style={styles.container}>
-            <StatusBar style="light" backgroundColor={colors.primaryLight} />
+            <StatusBar style="light" backgroundColor={colors.primary} />
 
             {/* Top container */}
-            <View style={{ backgroundColor: colors.primary, flex: 0.7, justifyContent: 'flex-end' }} >
+            <View style={{ backgroundColor: colors.primary, height: RFPercentage(28), justifyContent: 'flex-end' }} >
                 <ImageBackground style={{ marginBottom: RFPercentage(1), width: windowWidth, height: RFPercentage(30), alignItems: 'center', justifyContent: 'flex-end' }} source={banner} >
                     <View style={{ flexDirection: 'column' }} >
                         {/* Search feilds */}

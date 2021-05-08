@@ -4,15 +4,15 @@ import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import colors from "../config/colors"
 
-function AppTextInput({ placeHolder, value, onChange, width = "100%", icon, fontWeight, rightButtonText, secure = false, iconType = "MaterialCommunityIcons", editable = true, startEdit, endEdit }) {
+function AppTextInput({ borderWidth = 0, placeHolder, value, onChange, width = "100%", height = RFPercentage(6.2), icon, fontWeight, rightButtonText, secure = false, iconType = "MaterialCommunityIcons", editable = true, startEdit, endEdit, border = false }) {
     const [focus, setFocus] = useState(false)
 
     return (
         <View style={{
             backgroundColor: colors.white, borderRadius: RFPercentage(1.2),
-            width: width, alignItems: 'flex-start', justifyContent: 'center'
+            width: width, alignItems: 'flex-start', justifyContent: 'center',
+            borderWidth: borderWidth, borderColor: colors.primary, height
         }}>
-
             <View style={{ width: "100%", flexDirection: "row", alignItems: "center" }} >
                 {iconType === "MaterialIcons" ?
                     <MaterialIcons color={colors.grey} style={{ padding: RFPercentage(1), paddingRight: 0 }} size={RFPercentage(2.2)} name={icon} />

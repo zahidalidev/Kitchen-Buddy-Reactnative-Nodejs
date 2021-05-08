@@ -19,6 +19,7 @@ import colors from './app/config/colors';
 import Login from './app/screens/Login';
 import SignUp from './app/screens/SignUp';
 import Home from './app/screens/Home';
+import AddIngredients from './app/screens/AddIngredients';
 
 const Stack = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -43,9 +44,9 @@ export default function App() {
   function HomeTabs() {
     return (
       <Tab.Navigator initialRouteName="Home" tabBarOptions={{
-        style: { height: 70 },
-        labelStyle: { fontSize: RFPercentage(1.8), fontWeight: '500', marginBottom: RFPercentage(1.5) },
-        activeTintColor: colors.primary, inactiveTintColor: colors.grey, tabStyle: { backgroundColor: colors.white, fontSize: 40 }
+        style: { height: 60 },
+        labelStyle: { fontSize: RFPercentage(1.7), fontWeight: '500', marginBottom: RFPercentage(1.2) },
+        activeTintColor: colors.primary, inactiveTintColor: colors.grey, tabStyle: { backgroundColor: colors.white, fontSize: 30 }
       }} >
         <Tab.Screen
           name="Home"
@@ -57,14 +58,14 @@ export default function App() {
                 style={{ marginTop: 13 }}
                 name="home"
                 color={color}
-                size={size + 2}
+                size={size}
               />
             ),
           }}
         />
         <Tab.Screen
           name="Orders"
-          component={Home}
+          component={AddIngredients}
           options={{
             tabBarLabel: 'Add Ingredient',
             tabBarIcon: ({ color, size }) => (
@@ -72,7 +73,7 @@ export default function App() {
                 style={{ marginTop: 13 }}
                 name="plus"
                 color={color}
-                size={size + 2}
+                size={size}
               />
             ),
           }}
@@ -87,7 +88,7 @@ export default function App() {
                 style={{ marginTop: 13 }}
                 name="category"
                 color={color}
-                size={size + 2}
+                size={size}
               />
             ),
           }}
@@ -102,7 +103,7 @@ export default function App() {
                 style={{ marginTop: 13 }}
                 name="clock-alert"
                 color={color}
-                size={size + 2}
+                size={size}
               />
             ),
           }}
