@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions, Image, ImageBackground, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, ImageBackground, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants'
 import { RFPercentage } from 'react-native-responsive-fontsize';
@@ -42,15 +42,39 @@ function Home(props) {
             </View>
 
             {/* Bottom Contaienr */}
-            <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 1.8, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} >
+            <View style={{ flexDirection: 'column', marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 1.8, alignItems: 'center', justifyContent: 'center' }} >
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    numColumns={2}
+                    data={[{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }]}
+                    keyExtractor={(item, index) => item.id}
+                    renderItem={(item) =>
+                        <TouchableOpacity onPress={() => props.navigation.navigate('home')} activeOpacity={0.9} style={{
+                            marginBottom: RFPercentage(1.5),
+                            marginLeft: RFPercentage(1),
+                            marginRight: RFPercentage(2),
+                            marginTop: RFPercentage(1),
+                            backgroundColor: 'white',
+                            shadowColor: '#b5b5b5',
+                            shadowOffset: { width: 0, height: 0 },
+                            shadowOpacity: 0.8,
+                            shadowRadius: 3,
+                            elevation: 7,
+                            borderRadius: RFPercentage(4),
+                            width: RFPercentage(17.5), height: RFPercentage(25),
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexDirection: "column",
+                        }} >
+                        </TouchableOpacity>
 
-
-
+                    }
+                />
 
             </View>
 
 
-        </View>
+        </View >
     );
 }
 
