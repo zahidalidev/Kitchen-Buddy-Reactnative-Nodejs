@@ -6,7 +6,6 @@ import colors from "../config/colors"
 
 function AppTextInput({ placeHolder, value, onChange, width = "100%", icon, fontWeight, rightButtonText, secure = false, iconType = "MaterialCommunityIcons", editable = true, startEdit, endEdit }) {
     const [focus, setFocus] = useState(false)
-    const [email, setEmail] = useState('')
 
     return (
         <View style={{
@@ -18,7 +17,7 @@ function AppTextInput({ placeHolder, value, onChange, width = "100%", icon, font
                 {iconType === "MaterialIcons" ?
                     <MaterialIcons color={colors.grey} style={{ padding: RFPercentage(1), paddingRight: 0 }} size={RFPercentage(2.2)} name={icon} />
                     :
-                    <MaterialCommunityIcons color={colors.grey} style={{ padding: RFPercentage(1), paddingRight: 0 }} size={RFPercentage(2.2)} name={icon} />
+                    <MaterialCommunityIcons color={colors.mediumGrey} style={{ padding: RFPercentage(1), paddingRight: 0 }} size={RFPercentage(3)} name={icon} />
                 }
 
                 <TextInput style={{ color: colors.grey, padding: RFPercentage(1), width: rightButtonText ? "70%" : "90%", fontSize: RFPercentage(2.2) }}

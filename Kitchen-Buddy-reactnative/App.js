@@ -135,8 +135,6 @@ export default function App() {
     </AnimatedSplash>
   );
 
-
-
 }
 
 const styles = StyleSheet.create({
