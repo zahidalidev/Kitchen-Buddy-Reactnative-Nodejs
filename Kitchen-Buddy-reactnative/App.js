@@ -45,7 +45,7 @@ export default function App() {
       <Tab.Navigator initialRouteName="Home" tabBarOptions={{
         style: { height: 70 },
         labelStyle: { fontSize: RFPercentage(1.8), fontWeight: '500', marginBottom: RFPercentage(1.5) },
-        activeTintColor: '#acdee0', inactiveTintColor: '#C3C3C3', tabStyle: { backgroundColor: "black", fontSize: 40 }
+        activeTintColor: colors.primary, inactiveTintColor: colors.grey, tabStyle: { backgroundColor: colors.white, fontSize: 40 }
       }} >
         <Tab.Screen
           name="Home"
@@ -66,11 +66,11 @@ export default function App() {
           name="Orders"
           component={Home}
           options={{
-            tabBarLabel: 'Orders',
+            tabBarLabel: 'Add Item',
             tabBarIcon: ({ color, size }) => (
               <Foundation
                 style={{ marginTop: 13 }}
-                name="clipboard-notes"
+                name="plus"
                 color={color}
                 size={size + 2}
               />
@@ -81,11 +81,11 @@ export default function App() {
           name="Profile"
           component={Home}
           options={{
-            tabBarLabel: 'Profile',
+            tabBarLabel: 'Categories',
             tabBarIcon: ({ color, size }) => (
               <MaterialIcons
                 style={{ marginTop: 13 }}
-                name="account-circle"
+                name="category"
                 color={color}
                 size={size + 2}
               />
@@ -96,11 +96,11 @@ export default function App() {
           name="Settings"
           component={Home}
           options={{
-            tabBarLabel: 'Settings',
+            tabBarLabel: 'Expire Soon',
             tabBarIcon: ({ color, size }) => (
-              <MaterialIcons
+              <MaterialCommunityIcons
                 style={{ marginTop: 13 }}
-                name="settings"
+                name="clock-alert"
                 color={color}
                 size={size + 2}
               />
