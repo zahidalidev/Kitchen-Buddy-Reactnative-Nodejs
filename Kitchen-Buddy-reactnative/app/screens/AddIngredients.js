@@ -9,6 +9,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import colors from '../config/colors';
 import AppTextInput from '../components/AppTextInput';
+import AppTextButton from '../components/AppTextButton';
 
 function AddIngredients(props) {
     const [name, setName] = useState('');
@@ -75,6 +76,10 @@ function AddIngredients(props) {
             size={20}
             color={"grey"}
         />
+    }
+
+    const handleSubmit = () => {
+
     }
 
     return (
@@ -217,12 +222,12 @@ function AddIngredients(props) {
                     </View>
 
                     {/* dateTimePicker component */}
-                    <View style={{ marginBottom: RFPercentage(3), flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
+                    <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
                         <View style={{ paddingBottom: RFPercentage(1.2) }} >
                             <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Select Expiration Date</Text>
                         </View>
-                        <View>
 
+                        <View>
                             <View style={{ borderColor: colors.primary, borderWidth: 1, padding: RFPercentage(1.4), paddingRight: 0, borderRadius: RFPercentage(1), width: "100%", height: RFPercentage(6), flexDirection: "row", justifyContent: "center", alignItems: "center" }} >
                                 <TouchableOpacity style={{ width: Platform.OS === "ios" ? "80%" : "100%" }} onPress={() => setShow(true)}>
                                     <Text style={{ fontSize: RFPercentage(2.2), color: colors.grey, width: "100%" }} >{date.toDateString()}</Text>
@@ -236,8 +241,6 @@ function AddIngredients(props) {
                             </View>
 
                         </View>
-
-
                         {show && (
                             <DateTimePicker
                                 style={{ width: 320, backgroundColor: "white" }}
@@ -250,6 +253,19 @@ function AddIngredients(props) {
                             />
                         )}
                     </View>
+
+                    {/* Add button */}
+                    <View style={{ marginBottom: RFPercentage(3), marginTop: RFPercentage(3), width: "85%", flex: 1, alignItems: "flex-end" }} >
+                        <AppTextButton
+                            name="Add Ingredient"
+                            borderRadius={RFPercentage(1.3)}
+                            onSubmit={() => handleSubmit()}
+                            backgroundColor={colors.primary}
+                            width="100%"
+                            height={RFPercentage(5.5)}
+                        />
+                    </View>
+
                 </ScrollView>
             </View>
         </View>
