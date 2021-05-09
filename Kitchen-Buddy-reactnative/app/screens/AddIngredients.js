@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Platform, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Constants from "expo-constants"
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ReactNativeCrossPicker from "react-native-cross-picker"
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import colors from '../config/colors';
 import AppTextInput from '../components/AppTextInput';
@@ -18,6 +19,20 @@ function AddIngredients(props) {
     const [openPacked, setOpenPacked] = useState('packed')
     const [ripeness, setRipeness] = useState('')
     const [frozen, setFrozen] = useState('')
+
+    // date
+    const [date, setDate] = useState(new Date(1598051730000));
+    const [show, setShow] = useState(false);
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+    };
+
+    const showDatepicker = () => {
+        setShow(true);
+    };
 
     const categoryList = [
         { label: "fruit", value: "fruit" },
@@ -203,6 +218,31 @@ function AddIngredients(props) {
                             setItem={setOpenPacked} selectedItem={openPacked}
                             placeholder="Select Confection" modalMarginTop={RFPercentage(77)}
                         />
+                    </View>
+
+                    {/* dateTimePicker component */}
+                    <View style={{ marginBottom: RFPercentage(3), flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
+                        <View style={{ paddingBottom: RFPercentage(1.2) }} >
+                            <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Select Expiration Date</Text>
+                        </View>
+                        <TouchableOpacity onPress={showDatepicker}>
+                            <View style={{ borderColor: colors.primary, borderWidth: 1, padding: RFPercentage(1.4), paddingRight: 0, borderRadius: RFPercentage(1), width: "100%", height: RFPercentage(6), flexDirection: "row", justifyContent: "center", alignItems: "center" }} >
+                                <Text style={{ fontSize: RFPercentage(2.2), color: colors.grey, width: "100%" }} >{date.toDateString()}</Text>
+                            </View>
+                        </TouchableOpacity>
+
+
+                        {show && (
+                            <DateTimePicker
+                                style={{ width: 320, backgroundColor: "white" }}
+                                testID="dateTimePicker"
+                                value={date}
+                                mode={"date"}
+                                is24Hour={true}
+                                display="default"
+                                onChange={onChange}
+                            />
+                        )}
                     </View>
                 </ScrollView>
             </View>
