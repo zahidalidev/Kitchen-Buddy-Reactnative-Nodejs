@@ -30,10 +30,6 @@ function AddIngredients(props) {
         setDate(currentDate);
     };
 
-    const showDatepicker = () => {
-        setShow(true);
-    };
-
     const categoryList = [
         { label: "fruit", value: "fruit" },
         { label: "vegetable", value: "vegetable" },
@@ -225,11 +221,22 @@ function AddIngredients(props) {
                         <View style={{ paddingBottom: RFPercentage(1.2) }} >
                             <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Select Expiration Date</Text>
                         </View>
-                        <TouchableOpacity onPress={showDatepicker}>
+                        <View>
+
                             <View style={{ borderColor: colors.primary, borderWidth: 1, padding: RFPercentage(1.4), paddingRight: 0, borderRadius: RFPercentage(1), width: "100%", height: RFPercentage(6), flexDirection: "row", justifyContent: "center", alignItems: "center" }} >
-                                <Text style={{ fontSize: RFPercentage(2.2), color: colors.grey, width: "100%" }} >{date.toDateString()}</Text>
+                                <TouchableOpacity style={{ width: Platform.OS === "ios" ? "80%" : "100%" }} onPress={() => setShow(true)}>
+                                    <Text style={{ fontSize: RFPercentage(2.2), color: colors.grey, width: "100%" }} >{date.toDateString()}</Text>
+                                </TouchableOpacity>
+                                {Platform.OS === "ios" ?
+                                    <TouchableOpacity style={{ width: "20%" }} onPress={() => setShow(true)}>
+
+                                        <Text onPress={() => setShow(false)} style={{ fontSize: RFPercentage(2.2), color: colors.primary, width: "100%" }} >Done</Text>
+                                    </TouchableOpacity>
+                                    : null
+                                }
+
                             </View>
-                        </TouchableOpacity>
+                        </View>
 
 
                         {show && (
