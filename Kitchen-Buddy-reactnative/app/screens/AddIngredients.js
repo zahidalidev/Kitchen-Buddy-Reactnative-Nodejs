@@ -229,13 +229,12 @@ function AddIngredients(props) {
                                 </TouchableOpacity>
                                 {Platform.OS === "ios" ?
                                     <TouchableOpacity style={{ width: "20%" }} onPress={() => setShow(true)}>
-
                                         <Text onPress={() => setShow(false)} style={{ fontSize: RFPercentage(2.2), color: colors.primary, width: "100%" }} >Done</Text>
                                     </TouchableOpacity>
                                     : null
                                 }
-
                             </View>
+
                         </View>
 
 
