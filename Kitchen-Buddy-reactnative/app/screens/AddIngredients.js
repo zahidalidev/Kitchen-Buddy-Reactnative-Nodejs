@@ -153,6 +153,7 @@ function AddIngredients(props) {
                         />
                     </View>
 
+                    {/* drop down Ripeness */}
                     {confection === "fresh" ?
                         <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
                             <View style={{ paddingBottom: RFPercentage(1.2) }} >
@@ -169,6 +170,8 @@ function AddIngredients(props) {
                             />
                         </View> : null
                     }
+
+                    {/* drop down Frozen or not */}
                     {confection === "fresh" ?
                         <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
                             <View style={{ paddingBottom: RFPercentage(1.2) }} >
