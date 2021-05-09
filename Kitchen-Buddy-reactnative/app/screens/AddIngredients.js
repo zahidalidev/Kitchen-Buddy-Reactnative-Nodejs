@@ -77,8 +77,8 @@ function AddIngredients(props) {
 
             {/* Bottom Contaienr */}
             <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 2, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
-                <ScrollView style={{ width: "100%", marginLeft: "15%" }} >
-                    <View style={{ flexDirection: "column", marginTop: RFPercentage(8), width: "85%" }} >
+                <ScrollView style={{ width: "100%", marginLeft: "15%", marginTop: RFPercentage(2), }} >
+                    <View style={{ flexDirection: "column", marginTop: RFPercentage(6), width: "85%" }} >
                         <View style={{ paddingBottom: RFPercentage(1.2) }} >
                             <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Name of Ingredient*</Text>
                         </View>
@@ -165,16 +165,16 @@ function AddIngredients(props) {
                     {confection === "fresh" ?
                         <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
                             <View style={{ paddingBottom: RFPercentage(1.2) }} >
-                                <Text style={{ marginLeft: "20%", fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Ripeness</Text>
+                                <Text style={{ marginLeft: "10%", fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Ripeness</Text>
                             </View>
                             <ReactNativeCrossPicker
                                 placeHolderColor={colors.grey}
                                 placeHolderSize={RFPercentage(2.2)}
                                 modalComponentStyle={{ width: "90%", marginLeft: "5%" }}
                                 modalTextStyle={{ color: colors.primary }}
-                                mainComponentStyle={{ marginLeft: "20%", height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
+                                mainComponentStyle={{ marginLeft: "10%", height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
                                 iconComponent={iconCategory}
-                                items={ripenessList} width={"80%"}
+                                items={ripenessList} width={"90%"}
                                 setItem={setRipeness} selectedItem={ripeness}
                                 placeholder="Select Confection" modalMarginTop={RFPercentage(67)}
                                 modalMaxHeight={"35%"}
@@ -184,16 +184,16 @@ function AddIngredients(props) {
                     {confection === "fresh" ?
                         <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
                             <View style={{ paddingBottom: RFPercentage(1.2) }} >
-                                <Text style={{ marginLeft: "20%", fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Frozen or Not</Text>
+                                <Text style={{ marginLeft: "10%", fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Frozen or Not</Text>
                             </View>
                             <ReactNativeCrossPicker
                                 placeHolderColor={colors.grey}
                                 placeHolderSize={RFPercentage(2.2)}
                                 modalComponentStyle={{ width: "90%", marginLeft: "5%" }}
                                 modalTextStyle={{ color: colors.primary }}
-                                mainComponentStyle={{ marginLeft: "20%", height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
+                                mainComponentStyle={{ marginLeft: "10%", height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
                                 iconComponent={iconCategory}
-                                items={frozenList} width={"80%"}
+                                items={frozenList} width={"90%"}
                                 setItem={setFrozen} selectedItem={frozen}
                                 placeholder="Select Confection" modalMarginTop={RFPercentage(67)}
                                 modalMaxHeight={"35%"}
