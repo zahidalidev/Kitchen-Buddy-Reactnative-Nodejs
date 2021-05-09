@@ -111,16 +111,13 @@ function AddIngredients(props) {
                             <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Category</Text>
                         </View>
                         <ReactNativeCrossPicker
-                            placeHolderColor={colors.grey}
                             placeHolderSize={RFPercentage(2.2)}
-                            modalComponentStyle={{ width: "90%", marginLeft: "5%" }}
                             modalTextStyle={{ color: colors.primary }}
-                            mainComponentStyle={{ height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
+                            mainComponentStyle={{ borderColor: colors.primary, borderWidth: 1 }}
                             iconComponent={iconCategory}
-                            items={categoryList} width={"100%"}
+                            items={categoryList}
                             setItem={setCategory} selectedItem={category}
                             placeholder="Select Category" modalMarginTop={RFPercentage(47)}
-                            modalMaxHeight={"35%"}
                         />
                     </View>
 
@@ -130,16 +127,13 @@ function AddIngredients(props) {
                             <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Location</Text>
                         </View>
                         <ReactNativeCrossPicker
-                            placeHolderColor={colors.grey}
                             placeHolderSize={RFPercentage(2.2)}
-                            modalComponentStyle={{ width: "90%", marginLeft: "5%" }}
                             modalTextStyle={{ color: colors.primary }}
                             mainComponentStyle={{ height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
                             iconComponent={iconCategory}
-                            items={locationList} width={"100%"}
+                            items={locationList}
                             setItem={setLocation} selectedItem={location}
                             placeholder="Select Location" modalMarginTop={RFPercentage(57)}
-                            modalMaxHeight={"35%"}
                         />
                     </View>
 
@@ -149,16 +143,13 @@ function AddIngredients(props) {
                             <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Confection type</Text>
                         </View>
                         <ReactNativeCrossPicker
-                            placeHolderColor={colors.grey}
                             placeHolderSize={RFPercentage(2.2)}
-                            modalComponentStyle={{ width: "90%", marginLeft: "5%" }}
                             modalTextStyle={{ color: colors.primary }}
                             mainComponentStyle={{ height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
                             iconComponent={iconCategory}
-                            items={confectionList} width={"100%"}
+                            items={confectionList}
                             setItem={setConfection} selectedItem={confection}
                             placeholder="Select Confection" modalMarginTop={RFPercentage(67)}
-                            modalMaxHeight={"35%"}
                         />
                     </View>
 
@@ -168,16 +159,13 @@ function AddIngredients(props) {
                                 <Text style={{ marginLeft: "10%", fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Ripeness</Text>
                             </View>
                             <ReactNativeCrossPicker
-                                placeHolderColor={colors.grey}
                                 placeHolderSize={RFPercentage(2.2)}
-                                modalComponentStyle={{ width: "90%", marginLeft: "5%" }}
                                 modalTextStyle={{ color: colors.primary }}
                                 mainComponentStyle={{ marginLeft: "10%", height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
                                 iconComponent={iconCategory}
                                 items={ripenessList} width={"90%"}
                                 setItem={setRipeness} selectedItem={ripeness}
                                 placeholder="Select Confection" modalMarginTop={RFPercentage(67)}
-                                modalMaxHeight={"35%"}
                             />
                         </View> : null
                     }
@@ -187,16 +175,13 @@ function AddIngredients(props) {
                                 <Text style={{ marginLeft: "10%", fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Frozen or Not</Text>
                             </View>
                             <ReactNativeCrossPicker
-                                placeHolderColor={colors.grey}
                                 placeHolderSize={RFPercentage(2.2)}
-                                modalComponentStyle={{ width: "90%", marginLeft: "5%" }}
                                 modalTextStyle={{ color: colors.primary }}
                                 mainComponentStyle={{ marginLeft: "10%", height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
                                 iconComponent={iconCategory}
                                 items={frozenList} width={"90%"}
                                 setItem={setFrozen} selectedItem={frozen}
                                 placeholder="Select Confection" modalMarginTop={RFPercentage(67)}
-                                modalMaxHeight={"35%"}
                             />
                         </View> : null
                     }
@@ -207,16 +192,13 @@ function AddIngredients(props) {
                             <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Open/Packed</Text>
                         </View>
                         <ReactNativeCrossPicker
-                            placeHolderColor={colors.grey}
                             placeHolderSize={RFPercentage(2.2)}
-                            modalComponentStyle={{ width: "90%", marginLeft: "5%" }}
                             modalTextStyle={{ color: colors.primary }}
                             mainComponentStyle={{ height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
                             iconComponent={iconCategory}
-                            items={openPackedList} width={"100%"}
+                            items={openPackedList}
                             setItem={setOpenPacked} selectedItem={openPacked}
                             placeholder="Select Confection" modalMarginTop={RFPercentage(77)}
-                            modalMaxHeight={"35%"}
                         />
                     </View>
                 </ScrollView>
