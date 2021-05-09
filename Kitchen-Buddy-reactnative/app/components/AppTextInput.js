@@ -11,7 +11,7 @@ function AppTextInput({ borderWidth = 0, placeHolder, value, onChange, width = "
         <View style={{
             backgroundColor: colors.white, borderRadius: RFPercentage(1.2),
             width: width, alignItems: 'flex-start', justifyContent: 'center',
-            borderWidth: borderWidth, borderColor: colors.primary, height
+            borderWidth: borderWidth, borderColor: colors.primary, height: RFPercentage(6)
         }}>
             <View style={{ width: "100%", flexDirection: "row", alignItems: "center" }} >
                 {iconType === "MaterialIcons" ?
@@ -22,7 +22,7 @@ function AppTextInput({ borderWidth = 0, placeHolder, value, onChange, width = "
 
                 <TextInput style={{ color: colors.grey, padding: RFPercentage(1), width: rightButtonText ? "70%" : "90%", fontSize: RFPercentage(2.2) }}
                     placeholder={placeHolder}
-                    onFocus={() => setFocus(true)}
+                    onFocus={() => setFocus(true)} s
                     onEndEditing={() => setFocus(false)}
                     value={value}
                     secureTextEntry={secure}
