@@ -25,12 +25,12 @@ function Card({ title, confectionType, expirationDate, location, category }) {
             </View>
 
             <View style={{ flexDirection: "row" }} >
-                <FontAwesome5 style={{ marginTop: 1 }} name="search-location" size={RFPercentage(2)} color={colors.mediumGrey} />
+                <MaterialIcons style={{ marginTop: 1 }} name="location-pin" size={RFPercentage(2)} color={colors.mediumGrey} />
                 <Text numberOfLines={1} style={{ marginLeft: 4, color: colors.grey, fontSize: RFPercentage(2) }} >{location}</Text>
             </View>
 
             <View style={{ flexDirection: "row" }} >
-                <MaterialIcons style={{ marginTop: 1 }} name="category" size={RFPercentage(2)} color={colors.mediumGrey} />
+                <MaterialIcons style={{ marginTop: 1 }} name="category" size={RFPercentage(1.8)} color={colors.mediumGrey} />
                 <Text numberOfLines={1} style={{ marginLeft: 4, color: colors.grey, fontSize: RFPercentage(2) }} >{category}</Text>
             </View>
 
