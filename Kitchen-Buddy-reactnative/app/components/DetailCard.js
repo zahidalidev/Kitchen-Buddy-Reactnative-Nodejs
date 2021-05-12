@@ -12,12 +12,7 @@ function DetailCard({ props, item }) {
     return (
         <View style={{ padding: RFPercentage(2), flex: 1, width: "100%", flexDirection: "column", alignItems: "center", justifyContent: "flex-start" }} >
 
-            <View style={{ marginLeft: RFPercentage(1), flex: 1, width: "100%", justifyContent: "flex-end", alignItems: "flex-end" }} >
-                <TouchableOpacity onPress={() => (props.navigation.navigate('updateIngredients', { ingredientDetails: item }))} activeOpacity={0.8} style={{ flexDirection: "row", borderRadius: RFPercentage(3), backgroundColor: "#6f9cdb", padding: RFPercentage(1), paddingLeft: RFPercentage(1.3), paddingRight: RFPercentage(1.3) }} >
-                    <Text numberOfLines={1} style={{ fontSize: RFPercentage(2.2), color: colors.white, marginRight: 5 }} >Edit</Text>
-                    <MaterialCommunityIcons name="pencil" size={RFPercentage(2.2)} color={colors.white} />
-                </TouchableOpacity>
-            </View>
+
 
             <View style={{ flexDirection: "row", width: "90%", alignItems: "center", justifyContent: "center" }}>
                 <Text numberOfLines={1} style={{ padding: RFPercentage(1.3), color: colors.primaryLight, fontSize: RFPercentage(3.8), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.name}</Text>
@@ -70,7 +65,19 @@ function DetailCard({ props, item }) {
                 <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.red, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.expirationDate}</Text>
             </View>
 
+            <View style={{ marginTop: RFPercentage(2), marginBottom: RFPercentage(1), flexDirection: "row", marginLeft: RFPercentage(1), marginRight: RFPercentage(1), flex: 1, width: "100%", justifyContent: "space-between", alignItems: "flex-end" }} >
 
+                <TouchableOpacity onPress={() => (props.navigation.navigate('updateIngredients', { ingredientDetails: item }))} activeOpacity={0.8} style={{ flexDirection: "row", borderRadius: RFPercentage(3), borderWidth: 1, borderColor: "#6f9cdb", padding: RFPercentage(1), paddingLeft: RFPercentage(1.7), paddingRight: RFPercentage(1.7) }} >
+                    <Text numberOfLines={1} style={{ fontSize: RFPercentage(2.2), color: "#6f9cdb", marginRight: 5 }} >Edit</Text>
+                    <MaterialCommunityIcons name="pencil" size={RFPercentage(2.2)} color={"#6f9cdb"} />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => (props.navigation.navigate('updateIngredients', { ingredientDetails: item }))} activeOpacity={0.8} style={{ flexDirection: "row", borderRadius: RFPercentage(3), borderWidth: 1, borderColor: colors.red, padding: RFPercentage(1), paddingLeft: RFPercentage(1.7), paddingRight: RFPercentage(1.7) }} >
+                    <Text numberOfLines={1} style={{ fontSize: RFPercentage(2.2), color: colors.red, marginRight: 5 }} >Delete </Text>
+                    <MaterialCommunityIcons name="trash-can" size={RFPercentage(2.2)} color={colors.red} />
+                </TouchableOpacity>
+
+            </View>
 
         </View>
     );

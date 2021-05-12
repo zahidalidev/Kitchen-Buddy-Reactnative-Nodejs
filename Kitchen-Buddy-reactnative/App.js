@@ -83,6 +83,21 @@ export default function App() {
           }}
         />
         <Tab.Screen
+          name="scaBarcode"
+          component={AddIngredients}
+          options={{
+            tabBarLabel: 'Barcode Scan',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                style={{ marginTop: 13 }}
+                name="barcode-scan"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
           name="categories"
           component={Categories}
           options={{
