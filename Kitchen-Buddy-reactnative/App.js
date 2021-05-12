@@ -20,6 +20,7 @@ import Login from './app/screens/Login';
 import SignUp from './app/screens/SignUp';
 import Home from './app/screens/Home';
 import AddIngredients from './app/screens/AddIngredients';
+import IngredientDetails from './app/screens/IngredientDetails';
 
 const Stack = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -131,6 +132,7 @@ export default function App() {
           <Stack.Screen name="home" >{(props) => <HomeTabs {...props} />}</Stack.Screen>
           <Stack.Screen name="login" >{(props) => <Login {...props} />}</Stack.Screen>
           <Stack.Screen name="signup" >{(props) => <SignUp {...props} />}</Stack.Screen>
+          <Stack.Screen name="ingredientDetails" >{(props) => <IngredientDetails {...props} />}</Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     </AnimatedSplash>

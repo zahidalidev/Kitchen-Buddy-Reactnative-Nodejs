@@ -140,7 +140,7 @@ function Home(props) {
                     data={ingredients}
                     keyExtractor={(item, index) => item.id}
                     renderItem={({ item }) =>
-                        <TouchableOpacity onPress={() => props.navigation.navigate('home')} activeOpacity={0.9} style={{
+                        <TouchableOpacity onPress={() => props.navigation.navigate('ingredientDetails', { item })} activeOpacity={0.9} style={{
                             margin: RFPercentage(1),
                             marginBottom: RFPercentage(1.5),
                             marginRight: RFPercentage(2),
@@ -154,7 +154,7 @@ function Home(props) {
                             elevation: 7,
 
                             borderRadius: RFPercentage(2),
-                            width: RFPercentage(20), height: RFPercentage(15),
+                            width: RFPercentage(20), height: RFPercentage(14),
                             alignItems: "center",
                             justifyContent: "center",
                             flexDirection: "column",
