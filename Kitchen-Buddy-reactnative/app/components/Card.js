@@ -19,17 +19,17 @@ function Card({ title, confectionType, expirationDate, location, category }) {
                 <Text numberOfLines={1} style={{ color: colors.primaryLight, fontSize: RFPercentage(3.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{title}</Text>
             </View>
 
-            <View style={{ width: "70%", flexDirection: "row", marginLeft: RFPercentage(2), padding: 0.3, marginTop: RFPercentage(3) }} >
+            <View style={{ width: "70%", flexDirection: "row", marginLeft: RFPercentage(2), padding: 1, marginTop: RFPercentage(3) }} >
                 <MaterialCommunityIcons style={{ marginTop: 1 }} name="clock-outline" size={RFPercentage(2)} color={"#dbdbdb"} />
                 <Text numberOfLines={1} style={{ marginLeft: 7, color: colors.grey, fontSize: RFPercentage(2) }} >{expirationDate}</Text>
             </View>
 
-            <View style={{ width: "70%", flexDirection: "row", marginLeft: RFPercentage(2), padding: 0.3, }} >
+            <View style={{ width: "70%", flexDirection: "row", marginLeft: RFPercentage(2), padding: 1, }} >
                 <MaterialIcons style={{ marginTop: 1 }} name="location-pin" size={RFPercentage(2)} color={"#dbdbdb"} />
                 <Text numberOfLines={1} style={{ marginLeft: 7, color: colors.grey, fontSize: RFPercentage(2) }} >{location}</Text>
             </View>
 
-            <View style={{ width: "70%", flexDirection: "row", marginLeft: RFPercentage(2), padding: 0.3, }} >
+            <View style={{ width: "70%", flexDirection: "row", marginLeft: RFPercentage(2), padding: 1, }} >
                 <MaterialIcons style={{ marginTop: 1 }} name="category" size={RFPercentage(1.8)} color={"#dbdbdb"} />
                 <Text numberOfLines={1} style={{ marginLeft: 7, color: colors.grey, fontSize: RFPercentage(2) }} >{category}</Text>
             </View>

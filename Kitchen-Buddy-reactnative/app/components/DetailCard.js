@@ -5,14 +5,15 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import Constants from 'expo-constants'
 
 import colors from '../config/colors';
+import AppTextButton from './AppTextButton';
 
-function DetailCard({ item }) {
+function DetailCard({ props, item }) {
 
     return (
         <View style={{ padding: RFPercentage(2), flex: 1, width: "100%", flexDirection: "column", alignItems: "center", justifyContent: "flex-start" }} >
 
             <View style={{ marginLeft: RFPercentage(1), flex: 1, width: "100%", justifyContent: "flex-end", alignItems: "flex-end" }} >
-                <TouchableOpacity activeOpacity={0.8} style={{ flexDirection: "row", borderRadius: RFPercentage(3), backgroundColor: "#6f9cdb", padding: RFPercentage(1), paddingLeft: RFPercentage(1.3), paddingRight: RFPercentage(1.3) }} >
+                <TouchableOpacity onPress={() => (props.navigation.navigate('updateIngredients'))} activeOpacity={0.8} style={{ flexDirection: "row", borderRadius: RFPercentage(3), backgroundColor: "#6f9cdb", padding: RFPercentage(1), paddingLeft: RFPercentage(1.3), paddingRight: RFPercentage(1.3) }} >
                     <Text numberOfLines={1} style={{ fontSize: RFPercentage(2.2), color: colors.white, marginRight: 5 }} >Edit</Text>
                     <MaterialCommunityIcons name="pencil" size={RFPercentage(2.2)} color={colors.white} />
                 </TouchableOpacity>
@@ -38,21 +39,22 @@ function DetailCard({ item }) {
                 <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.primaryLight, fontSize: RFPercentage(2.6), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Confection type</Text>
                 <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.confectionType}</Text>
             </View>
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
+            <View style={{ marginLeft: 25, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
                 <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.primaryLight, fontSize: RFPercentage(2.6), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Ripeness</Text>
-                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.ripeness}</Text>
+                <Text numberOfLines={1} style={{ marginLeft: -13, paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.ripeness}</Text>
             </View>
 
             {/* ripness edit date */}
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
-                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Ripeness edited date</Text>
-                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: "red", fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.ripenessEditedDate}</Text>
+            <View style={{ marginLeft: 25, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
+                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Ripeness edited</Text>
+                <Text numberOfLines={1} style={{ marginLeft: -13, paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.red, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.ripenessEditedDate}</Text>
             </View>
 
             {/* last check button */}
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
-                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Last check Date</Text>
-                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: "red", fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.lastCheckDate}</Text>
+            <View style={{ marginLeft: 25, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
+                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Last check</Text>
+                <AppTextButton onSubmit={() => console.log("check")} buttonStyle={{ marginLeft: -13, backgroundColor: colors.red, height: RFPercentage(3.3), borderRadius: 25 }} textStyle={{ fontSize: RFPercentage(1.5) }} name="2 Days ago" />
+                {/* <Text numberOfLines={1} style={{ marginLeft: -13, paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.red, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{"2 days ago"}</Text> */}
             </View>
 
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
@@ -65,7 +67,7 @@ function DetailCard({ item }) {
             </View>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
                 <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.primaryLight, fontSize: RFPercentage(2.6), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Expiration Date</Text>
-                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: "red", fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.expirationDate}</Text>
+                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.red, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.expirationDate}</Text>
             </View>
 
 

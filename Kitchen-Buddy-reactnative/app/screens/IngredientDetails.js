@@ -65,7 +65,7 @@ function IngredientDetails(props) {
                         justifyContent: "center",
                         flexDirection: "column",
                     }} >
-                        <DetailCard item={item} />
+                        <DetailCard props={props} item={item} />
                     </TouchableOpacity>
                 </ScrollView>
             </View>

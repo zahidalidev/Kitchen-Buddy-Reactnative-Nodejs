@@ -6,9 +6,9 @@ import { Button } from 'react-native-paper';
 
 import colors from '../config/colors';
 
-function AppTextButton({ name, icon, onSubmit, width, height = RFPercentage(6), borderRadius = 25, backgroundColor = "black", iconSize = 20, iconLeft }) {
+function AppTextButton({ name, icon, onSubmit, width, height = RFPercentage(6), borderRadius = 25, backgroundColor = "black", iconSize = 20, iconLeft, buttonStyle, textStyle }) {
     return (
-        <Button width={width} color={backgroundColor} mode="contained" onPress={() => onSubmit()} style={{ height, borderBottomEndRadius: borderRadius, borderBottomStartRadius: borderRadius, borderTopStartRadius: borderRadius, justifyContent: "center" }} >
+        <Button width={width} color={backgroundColor} mode="contained" onPress={() => onSubmit()} style={{ height, borderBottomEndRadius: borderRadius, borderBottomStartRadius: borderRadius, borderTopStartRadius: borderRadius, justifyContent: "center", ...buttonStyle }} >
 
             {
                 iconLeft ?
@@ -18,7 +18,7 @@ function AppTextButton({ name, icon, onSubmit, width, height = RFPercentage(6), 
             }
             {
                 name ?
-                    <Text numberOfLines={1} style={styles.text} >{name}</Text>
+                    <Text numberOfLines={1} style={{ color: "white", fontSize: RFPercentage(2.2), ...textStyle }} >{name}</Text>
                     : null
             }
             {
@@ -33,8 +33,7 @@ function AppTextButton({ name, icon, onSubmit, width, height = RFPercentage(6), 
 const styles = StyleSheet.create({
     container: {
 
-    },
-    text: { color: "white", fontSize: RFPercentage(2.2) }
+    }
 })
 
 export default AppTextButton;
