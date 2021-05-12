@@ -13,7 +13,7 @@ function DetailCard({ props, item }) {
         <View style={{ padding: RFPercentage(2), flex: 1, width: "100%", flexDirection: "column", alignItems: "center", justifyContent: "flex-start" }} >
 
             <View style={{ marginLeft: RFPercentage(1), flex: 1, width: "100%", justifyContent: "flex-end", alignItems: "flex-end" }} >
-                <TouchableOpacity onPress={() => (props.navigation.navigate('updateIngredients'))} activeOpacity={0.8} style={{ flexDirection: "row", borderRadius: RFPercentage(3), backgroundColor: "#6f9cdb", padding: RFPercentage(1), paddingLeft: RFPercentage(1.3), paddingRight: RFPercentage(1.3) }} >
+                <TouchableOpacity onPress={() => (props.navigation.navigate('updateIngredients', { ingredientDetails: item }))} activeOpacity={0.8} style={{ flexDirection: "row", borderRadius: RFPercentage(3), backgroundColor: "#6f9cdb", padding: RFPercentage(1), paddingLeft: RFPercentage(1.3), paddingRight: RFPercentage(1.3) }} >
                     <Text numberOfLines={1} style={{ fontSize: RFPercentage(2.2), color: colors.white, marginRight: 5 }} >Edit</Text>
                     <MaterialCommunityIcons name="pencil" size={RFPercentage(2.2)} color={colors.white} />
                 </TouchableOpacity>

@@ -29,8 +29,8 @@ function IngredientDetails(props) {
             ripenessEditedDate: "12-01-2021",
             lastCheckDate: "15-01-2021",
             frozen: "yes",
-            open: "yes",
-            expirationDate: "22-02-2021"
+            open: "packed",
+            expirationDate: new Date(1598051730000).toDateString()
         })
     }, [props.route.params.item])
 

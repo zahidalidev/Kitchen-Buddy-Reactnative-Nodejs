@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Constants from "expo-constants"
@@ -17,9 +17,10 @@ function UpdateIngredients(props) {
     const [category, setCategory] = useState('')
     const [location, setLocation] = useState('')
     const [confection, setConfection] = useState('')
-    const [openPacked, setOpenPacked] = useState('packed')
     const [ripeness, setRipeness] = useState('')
     const [frozen, setFrozen] = useState('')
+    const [openPacked, setOpenPacked] = useState('packed')
+    const [oldIngredientDetails, setOldIngredientDetails] = useState({});
 
     // date
     const [date, setDate] = useState(new Date(1598051730000));
@@ -30,6 +31,21 @@ function UpdateIngredients(props) {
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
     };
+
+    useEffect(() => {
+        const { name, brand, category, location, confectionType, ripeness, frozen, openPacked, expirationDate, id } = props.route.params.ingredientDetails;
+        setName(name);
+        setBrandName(brand);
+        setCategory(category);
+        setLocation(location);
+        setConfection(confectionType);
+        setRipeness(ripeness);
+        setFrozen(frozen);
+        setOpenPacked(openPacked);
+        setDate(new Date(expirationDate));
+        console.log(new Date(expirationDate));
+        console.log(new Date(1598051730000));
+    }, [props.route.params.ingredientDetails])
 
     const categoryList = [
         { label: "fruit", value: "fruit" },
@@ -88,7 +104,7 @@ function UpdateIngredients(props) {
 
             {/* Kitchen buddy top container */}
             <View style={{ backgroundColor: colors.primary, height: RFPercentage(16), width: "100%", flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
-                <Text style={{ top: RFPercentage(2), color: colors.white, fontSize: Platform.OS === "ios" ? RFPercentage(2.5) : RFPercentage(4.5) }} >Add Ingredients</Text>
+                <Text style={{ top: RFPercentage(2), color: colors.white, fontSize: Platform.OS === "ios" ? RFPercentage(2.5) : RFPercentage(4.5) }} >Update Ingredient</Text>
             </View>
 
             {/* Bottom Contaienr */}
@@ -257,7 +273,7 @@ function UpdateIngredients(props) {
                     {/* Add button */}
                     <View style={{ marginBottom: RFPercentage(3), marginTop: RFPercentage(3), width: "85%", flex: 1, alignItems: "flex-end" }} >
                         <AppTextButton
-                            name="Add Ingredient"
+                            name="Update Ingredient"
                             borderRadius={RFPercentage(1.3)}
                             onSubmit={() => handleSubmit()}
                             backgroundColor={colors.primary}
