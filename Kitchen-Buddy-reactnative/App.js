@@ -22,6 +22,8 @@ import Home from './app/screens/Home';
 import AddIngredients from './app/screens/AddIngredients';
 import UpdateIngredients from './app/screens/UpdateIngredients';
 import IngredientDetails from './app/screens/IngredientDetails';
+import ExpireSoon from './app/screens/ExpireSoon';
+import Categories from './app/screens/Categories';
 
 const Stack = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -81,8 +83,8 @@ export default function App() {
           }}
         />
         <Tab.Screen
-          name="Profile"
-          component={Home}
+          name="categories"
+          component={Categories}
           options={{
             tabBarLabel: 'Categories',
             tabBarIcon: ({ color, size }) => (
@@ -96,8 +98,8 @@ export default function App() {
           }}
         />
         <Tab.Screen
-          name="Settings"
-          component={Home}
+          name="expireSoon"
+          component={ExpireSoon}
           options={{
             tabBarLabel: 'Expire Soon',
             tabBarIcon: ({ color, size }) => (
