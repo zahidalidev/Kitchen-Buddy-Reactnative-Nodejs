@@ -9,6 +9,7 @@ import colors from '../config/colors';
 import AppTextButton from '../components/AppTextButton';
 
 import logo from "../../assets/images/kitchenLogo.gif"
+import { loginUser } from '../services/userService';
 
 function Login(props) {
 
@@ -33,7 +34,15 @@ function Login(props) {
         setFeilds(tempFeilds);
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        const email = feilds[0].value;
+        const password = feilds[1].value;
+        try {
+            const { data } = await loginUser(email, password);
+            console.log(data);
+        } catch (error) {
+            console.log("login error", error);
+        }
         props.navigation.navigate('home')
     }
 

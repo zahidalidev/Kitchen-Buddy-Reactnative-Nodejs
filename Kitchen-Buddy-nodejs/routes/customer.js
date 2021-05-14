@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/:email/:password", async (req, res) => {
     try {
-        const email = req.params.email;
+        const email = req.params.email.trim().toLowerCase();
         const password = req.params.password;
 
         await conn.connect();
@@ -40,9 +40,8 @@ router.get("/:email/:password", async (req, res) => {
 
 router.post("/", async (req, res) => {
     const name = req.body.name;
-    const email = req.body.email;
+    const email = req.body.email.trim().toLowerCase();
     const password = req.body.password;
-    console.log(email)
     try {
         await conn.connect();
 
@@ -55,7 +54,6 @@ router.post("/", async (req, res) => {
             };
 
             if (verificationResponce.recordset.length != 0) {
-                console.log("hi: ", verificationResponce.recordset)
                 conn.close();
                 return res.status(400).send("Email already registered");
             } else {

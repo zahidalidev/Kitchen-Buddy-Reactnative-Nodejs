@@ -60,7 +60,7 @@ function SignUp(props) {
             console.log("Registration Successful");
             props.navigation.navigate('login')
         } catch (error) {
-            console.log(error)
+            console.log("Registration Error", error);
         }
     }
 
