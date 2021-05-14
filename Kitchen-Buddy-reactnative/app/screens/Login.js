@@ -3,6 +3,7 @@ import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react
 import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants'
 import { RFPercentage } from 'react-native-responsive-fontsize';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import AppTextInput from '../components/AppTextInput';
 import colors from '../config/colors';
@@ -39,7 +40,7 @@ function Login(props) {
         const password = feilds[1].value;
         try {
             const { data } = await loginUser(email, password);
-            console.log(data);
+            await AsyncStorage.setItem('token', data.name);
         } catch (error) {
             console.log("login error", error);
         }
