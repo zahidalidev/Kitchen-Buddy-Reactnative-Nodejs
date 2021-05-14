@@ -7,6 +7,7 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import AppTextInput from '../components/AppTextInput';
 import colors from '../config/colors';
 import AppTextButton from '../components/AppTextButton';
+import { registerUser } from '../services/userService';
 
 function SignUp(props) {
     const [feilds, setFeilds] = useState([
@@ -23,19 +24,19 @@ function SignUp(props) {
             secure: false
         },
         {
-            id: 1,
-            placeHolder: "Email",
+            id: 2,
+            placeHolder: "email",
             value: '',
             secure: false
         },
         {
-            id: 1,
+            id: 3,
             placeHolder: "Password",
             value: '',
             secure: true
         },
         {
-            id: 1,
+            id: 4,
             placeHolder: "Confirm password",
             value: '',
             secure: true
@@ -48,8 +49,19 @@ function SignUp(props) {
         setFeilds(tempFeilds);
     }
 
-    const handleSubmit = () => {
-        props.navigation.navigate('home')
+    const handleSubmit = async () => {
+        const body = {
+            name: `${feilds[0].value} ${feilds[1].value}`,
+            email: feilds[2].value,
+            password: feilds[3].value
+        }
+        try {
+            await registerUser(body);
+            console.log("Registration Successful");
+            props.navigation.navigate('login')
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
