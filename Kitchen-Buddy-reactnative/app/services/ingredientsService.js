@@ -7,6 +7,6 @@ export const AddIngredient = async (body, userId) => {
     return await axios.post(`${apiEndPoint}/${userId}`, body);
 }
 
-export const getIngredients = async (userID) => {
+export const getAllIngredients = async (userID) => {
     return await axios.get(`${apiEndPoint}/${userID}`);
 }
