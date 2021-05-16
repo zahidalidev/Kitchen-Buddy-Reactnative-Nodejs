@@ -2,12 +2,14 @@ const express = require("express");
 const cors = require("cors");
 
 const customer = require("./routes/customer")
+const ingredients = require("./routes/ingredients")
 
 const app = express();
 app.use(cors());
 
 app.use(express.json());
 app.use("/api/users", customer);
+app.use("/api/ingredients", ingredients);
 
 // set port, from environment variable or 5000
 app.set('port', (process.env.PORT || 5000));

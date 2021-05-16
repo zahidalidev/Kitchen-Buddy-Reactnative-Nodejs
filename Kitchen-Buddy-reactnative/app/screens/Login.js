@@ -44,7 +44,7 @@ function Login(props) {
         try {
             setIndicator(true)
             const { data } = await loginUser(email, password);
-            await AsyncStorage.setItem('token', data.name);
+            await AsyncStorage.setItem('token', data.id.toString());
             setIndicator(false)
             props.navigation.navigate('home')
         } catch (error) {
@@ -56,7 +56,7 @@ function Login(props) {
 
     // get token from AsyncStorage to confirm login or logout
     let getToken = async () => {
-        // await AsyncStorage.removeItem('token');
+        await AsyncStorage.removeItem('token');
         try {
             let res = await AsyncStorage.getItem('token');
             if (res) {
