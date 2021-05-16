@@ -4,7 +4,7 @@ const conn = require("../config/db")
 
 const router = express.Router();
 
-router.get("/userId", async (req, res) => {
+router.get("/:userId", async (req, res) => {
     try {
         const email = req.params.userId;
         // const password = userId;
@@ -38,21 +38,20 @@ router.get("/userId", async (req, res) => {
 })
 
 
-router.post("/userId", async (req, res) => {
+router.post("/:userId", async (req, res) => {
     const userId = req.params.userId;
     const { name, brandName, category, location, confectionType,
-        ripeness, ripenessEditedDate, lastCheckDate, frozen,
+        ripeness, ripenessEditedDate, frozen,
         openClose, expirationDate } = req.body;
-
 
     try {
         await conn.connect();
         const request = new sql.Request(conn);
 
-        request.query(`insert into customer (name, brandName, category, location, confectionType, 
-            ripeness, ripenessEditedDate, lastCheckDate, frozen, openClose, expirationDate, userId) 
+        request.query(`insert into ingredient (name, brandName, category, location, confectionType, 
+            ripeness, ripenessEditedDate, frozen, openClose, expirationDate, userId) 
             values('${name}', '${brandName}', '${category}', '${location}', '${confectionType}'
-            , '${ripeness}', '${ripenessEditedDate}', '${lastCheckDate}', '${frozen}', '${openClose}'
+            , '${ripeness}', '${ripenessEditedDate}', '${frozen}', '${openClose}'
             , '${expirationDate}', '${userId}')`, (error, response) => {
             if (error) {
                 conn.close();

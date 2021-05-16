@@ -6,12 +6,18 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ReactNativeCrossPicker from "react-native-cross-picker"
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Toast from 'toastify-react-native';
 
 import colors from '../config/colors';
 import AppTextInput from '../components/AppTextInput';
 import AppTextButton from '../components/AppTextButton';
+import GetSqlDate from "../components/commmon/GetSqlDate"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AddIngredient } from '../services/ingredientsService';
 
 function AddIngredients(props) {
+    const [Toastify, setToastify] = useState();
+
     const [name, setName] = useState('');
     const [brandName, setBrandName] = useState('');
     const [category, setCategory] = useState('')
@@ -22,7 +28,7 @@ function AddIngredients(props) {
     const [frozen, setFrozen] = useState('')
 
     // date
-    const [date, setDate] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
 
     const onChange = (event, selectedDate) => {
@@ -30,6 +36,41 @@ function AddIngredients(props) {
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
     };
+
+    const handleSubmit = async () => {
+        if (name === '') {
+            Toastify.error("Ingredient Name is required");
+            return;
+        }
+
+        let ripenessEditedDate = null;
+        if (confection === 'fresh') {
+            ripenessEditedDate = GetSqlDate(new Date());
+        }
+
+        try {
+            let userId = await AsyncStorage.getItem('token');
+
+            const body = {
+                name,
+                brandName,
+                category,
+                location,
+                confectionType: confection,
+                ripeness,
+                ripenessEditedDate,
+                frozen,
+                openClose: openPacked,
+                expirationDate: GetSqlDate(date)
+            }
+
+            await AddIngredient(body, userId);
+            Toastify.success('Ingredient Added Successfully');
+        } catch (error) {
+            console.log("ingredients Added Error: ", error)
+            Toastify.error('Ingredient is not Added');
+        }
+    }
 
     const categoryList = [
         { label: "fruit", value: "fruit" },
@@ -78,13 +119,11 @@ function AddIngredients(props) {
         />
     }
 
-    const handleSubmit = () => {
-
-    }
-
     return (
         <View style={styles.container}>
             <StatusBar style="light" backgroundColor={colors.primary} />
+
+            <Toast ref={(t) => setToastify(t)} />
 
             {/* Kitchen buddy top container */}
             <View style={{ backgroundColor: colors.primary, height: RFPercentage(16), width: "100%", flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >

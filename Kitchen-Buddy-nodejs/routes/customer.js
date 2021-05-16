@@ -24,7 +24,6 @@ router.get("/:email/:password", async (req, res) => {
                     id: user.id
                 }
 
-                console.log(userDetails)
                 return res.send(userDetails);
             } else {
                 conn.close();
