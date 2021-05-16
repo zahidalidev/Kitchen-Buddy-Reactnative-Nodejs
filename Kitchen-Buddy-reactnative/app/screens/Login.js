@@ -73,7 +73,7 @@ function Login(props) {
         if (props.route.params !== undefined && props.route.params.registration) {
             toastify.success("Registration Successful");
         }
-    });
+    }, [props.route.params]);
 
     return (
         <View style={styles.container}>
