@@ -14,6 +14,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer"
 import { NavigationContainer } from "@react-navigation/native"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Foundation } from "@expo/vector-icons"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from './app/config/colors';
 import Login from './app/screens/Login';
@@ -28,7 +29,7 @@ import Categories from './app/screens/Categories';
 const Stack = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+export default function App(props) {
 
   const [isReady, setIsReady] = useState(false)
 
@@ -142,7 +143,7 @@ export default function App() {
       logoWidth={RFPercentage(52)}
     >
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="login" drawerType="front" overlayColor="transparent" edgeWidth={100} drawerStyle={{
+        <Stack.Navigator initialRouteName={'login'} drawerType="front" overlayColor="transparent" edgeWidth={100} drawerStyle={{
           backgroundColor: colors.white,
           width: 0
         }}

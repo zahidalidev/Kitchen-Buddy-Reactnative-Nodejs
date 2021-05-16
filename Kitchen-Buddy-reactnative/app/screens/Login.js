@@ -12,9 +12,10 @@ import AppTextButton from '../components/AppTextButton';
 
 import logo from "../../assets/images/kitchenLogo.gif"
 import { loginUser } from '../services/userService';
+import { useEffect } from 'react';
 
 function Login(props) {
-    const [ready, setReady] = useState(true);
+    const [indicator, setIndicator] = useState(false);
     const [toastify, setToastify] = useState();
     const [feilds, setFeilds] = useState([
         {
@@ -41,18 +42,38 @@ function Login(props) {
         const email = feilds[0].value;
         const password = feilds[1].value;
         try {
-            setReady(false)
+            setIndicator(true)
             const { data } = await loginUser(email, password);
             await AsyncStorage.setItem('token', data.name);
-            setReady(true)
+            setIndicator(false)
             props.navigation.navigate('home')
         } catch (error) {
             console.log("login error: ", error);
-            setReady(true)
+            setIndicator(false)
             toastify.error("Login Error");
         }
     }
 
+    // get token from AsyncStorage to confirm login or logout
+    let getToken = async () => {
+        // await AsyncStorage.removeItem('token');
+        try {
+            let res = await AsyncStorage.getItem('token');
+            if (res) {
+                props.navigation.navigate('home')
+                return;
+            }
+            props.navigation.navigate('login');
+        } catch (error) {
+        }
+    }
+
+    useEffect(() => {
+        getToken();
+        if (props.route.params !== undefined && props.route.params.registration) {
+            toastify.success("Registration Successful");
+        }
+    });
 
     return (
         <View style={styles.container}>
@@ -68,11 +89,11 @@ function Login(props) {
                 </View>
             </View>
 
-            {!ready ?
-                <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 1.8, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} >
+            {indicator
+                ? <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 1.8, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} >
                     <ActivityIndicator color={colors.primary} size={RFPercentage(6)} />
-                </View> :
-                <>
+                </View>
+                : <>
                     {/* Bottom Contaienr */}
                     <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 1.8, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} >
 
