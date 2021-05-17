@@ -1,74 +1,83 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Platform, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Constants from "expo-constants"
 import { RFPercentage } from 'react-native-responsive-fontsize';
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import ReactNativeCrossPicker from "react-native-cross-picker"
-import DateTimePicker from '@react-native-community/datetimepicker';
+import Toast from "toastify-react-native"
 
 import colors from '../config/colors';
-import AppTextInput from '../components/AppTextInput';
-import AppTextButton from '../components/AppTextButton';
 import DetailCard from '../components/DetailCard';
+import { getIngredientDetails } from '../services/ingredientsService';
+import GetSqlDate from '../components/commmon/GetSqlDate';
+import DatesDifference from "../components/commmon/DatesDifference"
 
 function IngredientDetails(props) {
 
+    const [activityIndi, setActivityIndi] = useState(false);
+    const [toastify, setToastify] = useState(false);
     const [item, setItem] = useState({});
 
+    const getIngredient = async (id) => {
+        try {
+            setActivityIndi(true);
+            const { data } = await getIngredientDetails(id);
+            let itemDetails = data[0];
+            itemDetails.ripenessEditedDate = GetSqlDate(new Date(itemDetails.ripenessEditedDate));
+            itemDetails.expirationDate = GetSqlDate(new Date(itemDetails.expirationDate));
+            itemDetails.lastCheckDate = DatesDifference(new Date(itemDetails.lastCheckDate))
+            setItem(itemDetails);
+        } catch (error) {
+            console.log("Error in getting details: ", error);
+            toastify.error("Error in getting details");
+        }
+        setActivityIndi(false);
+    }
+
     useEffect(() => {
-        // setItem(props.route.params.item)
-        setItem({
-            id: 3,
-            name: "chicken",
-            brand: "Sanderson Farms",
-            category: "meat",
-            location: "fridge",
-            confectionType: "fresh",
-            ripeness: "green",
-            ripenessEditedDate: "12-01-2021",
-            lastCheckDate: "15-01-2021",
-            frozen: "yes",
-            open: "packed",
-            expirationDate: new Date(1598051730000).toDateString()
-        })
-    }, [props.route.params.item])
+        const id = props.route.params.id;
+        getIngredient(id);
+    }, [props.route.params.id])
 
     return (
         <View style={styles.container}>
             <StatusBar style="light" backgroundColor={colors.primary} />
-
+            <Toast ref={(c) => setToastify(c)} />
             {/* Kitchen buddy top container */}
             <View style={{ backgroundColor: colors.primary, height: RFPercentage(16), width: "100%", flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
                 <Text style={{ top: RFPercentage(2), color: colors.white, fontSize: Platform.OS === "ios" ? RFPercentage(2.5) : RFPercentage(4.5) }} >Ingredient Details</Text>
             </View>
 
-            {/* Bottom Contaienr */}
-            <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 2, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
-                <ScrollView style={{ width: "100%", marginLeft: "15%", marginTop: RFPercentage(6), }} >
-                    <TouchableOpacity activeOpacity={1} style={{
-                        margin: RFPercentage(1),
-                        marginBottom: RFPercentage(2),
-                        marginRight: RFPercentage(2),
+            {activityIndi ?
+                <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 2, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} >
+                    <ActivityIndicator color={colors.primary} size={RFPercentage(6)} />
+                </View> :
+                // Bottom Contaienr
+                <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 2, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
+                    <ScrollView style={{ width: "100%", marginLeft: "15%", marginTop: RFPercentage(6), }} >
+                        <TouchableOpacity activeOpacity={1} style={{
+                            margin: RFPercentage(1),
+                            marginBottom: RFPercentage(2),
+                            marginRight: RFPercentage(2),
 
-                        backgroundColor: "white",
-                        // backgroundColor: (item.id % 2 == 0) ? colors.primary : "white",
-                        shadowColor: '#b5b5b5',
-                        shadowOffset: { width: 0, height: 0 },
-                        shadowOpacity: 0.8,
-                        shadowRadius: 3,
-                        elevation: 7,
+                            backgroundColor: "white",
+                            // backgroundColor: (item.id % 2 == 0) ? colors.primary : "white",
+                            shadowColor: '#b5b5b5',
+                            shadowOffset: { width: 0, height: 0 },
+                            shadowOpacity: 0.8,
+                            shadowRadius: 3,
+                            elevation: 7,
 
-                        borderRadius: RFPercentage(2),
-                        width: RFPercentage(40),
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "column",
-                    }} >
-                        <DetailCard props={props} item={item} />
-                    </TouchableOpacity>
-                </ScrollView>
-            </View>
+                            borderRadius: RFPercentage(2),
+                            width: RFPercentage(40),
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexDirection: "column",
+                        }} >
+                            <DetailCard props={props} item={item} />
+                        </TouchableOpacity>
+                    </ScrollView>
+                </View>
+            }
         </View>
     );
 }

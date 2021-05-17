@@ -25,6 +25,28 @@ router.get("/:userId", async (req, res) => {
 
 })
 
+router.get("/details/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        await conn.connect();
+        const request = new sql.Request(conn);
+
+        request.query(`select id, name, brandName, category, location, confectionType, ripeness, 
+        ripenessEditedDate, lastCheckDate, frozen, openClose, expirationDate
+        from ingredient where id = ${id}`, (error, response) => {
+            conn.close();
+            if (error) {
+                return res.status(404).send(error);
+            }
+            return res.send(response.recordset);
+        })
+    } catch (error) {
+        conn.close();
+        return res.status(500).send(error);
+    }
+
+})
+
 
 router.post("/:userId", async (req, res) => {
     const userId = req.params.userId;
@@ -55,8 +77,8 @@ router.post("/:userId", async (req, res) => {
     }
 })
 
-router.put("/:id/:userId", async (req, res) => {
-    const userId = req.params.userId;
+router.put("/:id", async (req, res) => {
+    const id = req.params.id;
     const { name, brandName, category, location, confectionType,
         ripeness, ripenessEditedDate, frozen,
         openClose, expirationDate } = req.body;
@@ -65,11 +87,11 @@ router.put("/:id/:userId", async (req, res) => {
         await conn.connect();
         const request = new sql.Request(conn);
 
-        request.query(`insert into ingredient (name, brandName, category, location, confectionType, 
-            ripeness, ripenessEditedDate, frozen, openClose, expirationDate, userId) 
+        request.query(`update ingredient name, brandName, category, location, confectionType, 
+            ripeness, ripenessEditedDate, frozen, openClose, expirationDate) 
             values('${name}', '${brandName}', '${category}', '${location}', '${confectionType}'
             , '${ripeness}', '${ripenessEditedDate}', '${frozen}', '${openClose}'
-            , '${expirationDate}', '${userId}')`, (error, response) => {
+            , '${expirationDate}')`, (error, response) => {
             conn.close();
             if (error) {
                 return res.status(400).send(error);

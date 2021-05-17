@@ -34,88 +34,6 @@ function Home(props) {
             console.log("Error All ingredients: ", error)
         }
         setActivityIndic(false);
-        // setIngredients([
-        //     {
-        //         id: 1,
-        //         name: "chicken",
-        //         category: "meat",
-        //         location: "fridge",
-        //         confectionType: "fresh",
-        //         expirationDate: "22-02-2021"
-        //     },
-        //     {
-        //         id: 2,
-        //         name: "chicken",
-        //         category: "meat",
-        //         location: "fridge",
-        //         confectionType: "fresh",
-        //         expirationDate: "22-02-2021"
-        //     },
-        //     {
-        //         id: 3,
-        //         name: "chicken",
-        //         category: "meat",
-        //         location: "fridge",
-        //         confectionType: "fresh",
-        //         expirationDate: "22-02-2021"
-        //     },
-        //     {
-        //         id: 4,
-        //         name: "chicken",
-        //         category: "meat",
-        //         location: "fridge",
-        //         confectionType: "fresh",
-        //         expirationDate: "22-02-2021"
-        //     },
-        //     {
-        //         id: 5,
-        //         name: "chicken",
-        //         category: "meat",
-        //         location: "fridge",
-        //         confectionType: "fresh",
-        //         expirationDate: "22-02-2021"
-        //     }, {
-        //         id: 6,
-        //         name: "chicken",
-        //         category: "meat",
-        //         location: "fridge",
-        //         confectionType: "fresh",
-        //         expirationDate: "22-02-2021"
-        //     },
-        //     {
-        //         id: 7,
-        //         name: "chicken",
-        //         category: "meat",
-        //         location: "fridge",
-        //         confectionType: "fresh",
-        //         expirationDate: "22-02-2021"
-        //     },
-        //     {
-        //         id: 8,
-        //         name: "chicken",
-        //         category: "meat",
-        //         location: "fridge",
-        //         confectionType: "fresh",
-        //         expirationDate: "22-02-2021"
-        //     },
-        //     {
-        //         id: 9,
-        //         name: "chicken",
-        //         category: "meat",
-        //         location: "fridge",
-        //         confectionType: "fresh",
-        //         expirationDate: "22-02-2021"
-        //     },
-        //     {
-        //         id: 10,
-        //         name: "chicken",
-        //         category: "meat",
-        //         location: "fridge",
-        //         confectionType: "fresh",
-        //         expirationDate: "22-02-2021"
-        //     },
-
-        // ]);
     }
 
     useEffect(() => {
@@ -158,7 +76,7 @@ function Home(props) {
                             data={ingredients}
                             keyExtractor={(item, index) => item.id}
                             renderItem={({ item }) =>
-                                <TouchableOpacity onPress={() => props.navigation.navigate('ingredientDetails', { item })} activeOpacity={0.9} style={{
+                                <TouchableOpacity onPress={() => props.navigation.navigate('ingredientDetails', { id: item.id })} activeOpacity={0.9} style={{
                                     margin: RFPercentage(1),
                                     marginBottom: RFPercentage(1.5),
                                     marginRight: RFPercentage(2),

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { FontAwesome5, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import Constants from 'expo-constants'
 
@@ -11,16 +11,13 @@ function DetailCard({ props, item }) {
 
     return (
         <View style={{ padding: RFPercentage(2), flex: 1, width: "100%", flexDirection: "column", alignItems: "center", justifyContent: "flex-start" }} >
-
-
-
             <View style={{ flexDirection: "row", width: "90%", alignItems: "center", justifyContent: "center" }}>
                 <Text numberOfLines={1} style={{ padding: RFPercentage(1.3), color: colors.primaryLight, fontSize: RFPercentage(3.8), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.name}</Text>
             </View>
 
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
                 <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.primaryLight, fontSize: RFPercentage(2.6), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Brand</Text>
-                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.brand}</Text>
+                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.brandName}</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
                 <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.primaryLight, fontSize: RFPercentage(2.6), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Category </Text>
@@ -34,23 +31,29 @@ function DetailCard({ props, item }) {
                 <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.primaryLight, fontSize: RFPercentage(2.6), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Confection type</Text>
                 <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.confectionType}</Text>
             </View>
-            <View style={{ marginLeft: 25, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
-                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.primaryLight, fontSize: RFPercentage(2.6), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Ripeness</Text>
-                <Text numberOfLines={1} style={{ marginLeft: -13, paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.ripeness}</Text>
-            </View>
 
-            {/* ripness edit date */}
-            <View style={{ marginLeft: 25, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
-                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Ripeness edited</Text>
-                <Text numberOfLines={1} style={{ marginLeft: -13, paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.red, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.ripenessEditedDate}</Text>
-            </View>
+            {item.confectionType === 'fresh' ?
+                <>
+                    {/* ripness */}
+                    <View style={{ marginLeft: 25, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
+                        <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.primaryLight, fontSize: RFPercentage(2.6), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Ripeness</Text>
+                        <Text numberOfLines={1} style={{ marginLeft: -13, paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.ripeness}</Text>
+                    </View>
 
-            {/* last check button */}
-            <View style={{ marginLeft: 25, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
-                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Last check</Text>
-                <AppTextButton onSubmit={() => console.log("check")} buttonStyle={{ marginLeft: -13, backgroundColor: colors.red, height: RFPercentage(3.3), borderRadius: 25 }} textStyle={{ fontSize: RFPercentage(1.5) }} name="2 Days ago" />
-                {/* <Text numberOfLines={1} style={{ marginLeft: -13, paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.red, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{"2 days ago"}</Text> */}
-            </View>
+                    {/* ripness edit date */}
+                    <View style={{ marginLeft: 25, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
+                        <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Ripeness edited</Text>
+                        <Text numberOfLines={1} style={{ marginLeft: -13, paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.red, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.ripenessEditedDate}</Text>
+                    </View>
+
+                    {/* last check button */}
+                    <View style={{ marginLeft: 25, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
+                        <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Last check</Text>
+                        <AppTextButton onSubmit={() => console.log("check")} buttonStyle={{ marginLeft: -13, backgroundColor: colors.red, height: RFPercentage(3.3), borderRadius: 25 }} textStyle={{ fontSize: RFPercentage(1.5) }} name={`${item.lastCheckDate} Days ago`} />
+                        {/* <Text numberOfLines={1} style={{ marginLeft: -13, paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.red, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{"2 days ago"}</Text> */}
+                    </View>
+                </> : null
+            }
 
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
                 <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.primaryLight, fontSize: RFPercentage(2.6), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Frozen</Text>
@@ -58,7 +61,7 @@ function DetailCard({ props, item }) {
             </View>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
                 <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.primaryLight, fontSize: RFPercentage(2.6), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Open</Text>
-                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.open}</Text>
+                <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{item.openClose}</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
                 <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.primaryLight, fontSize: RFPercentage(2.6), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Expiration Date</Text>

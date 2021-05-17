@@ -43,8 +43,6 @@ function UpdateIngredients(props) {
         setFrozen(frozen);
         setOpenPacked(openPacked);
         setDate(new Date(expirationDate));
-        console.log(new Date(expirationDate));
-        console.log(new Date(1598051730000));
     }, [props.route.params.ingredientDetails])
 
     const categoryList = [
