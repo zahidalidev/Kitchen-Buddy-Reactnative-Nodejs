@@ -66,37 +66,32 @@ function IngredientDetails(props) {
                 <Text style={{ top: RFPercentage(2), color: colors.white, fontSize: Platform.OS === "ios" ? RFPercentage(2.5) : RFPercentage(4.5) }} >Ingredient Details</Text>
             </View>
 
-            {activityIndi ?
-                <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 2, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} >
-                    <ActivityIndicator color={colors.primary} size={RFPercentage(6)} />
-                </View> :
-                // Bottom Contaienr
-                <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 2, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
-                    <ScrollView style={{ width: "100%", marginLeft: "15%", marginTop: RFPercentage(6), }} >
-                        <TouchableOpacity activeOpacity={1} style={{
-                            margin: RFPercentage(1),
-                            marginBottom: RFPercentage(2),
-                            marginRight: RFPercentage(2),
+            {/* Bottom Contaienr */}
+            <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 2, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
+                <ScrollView style={{ width: "100%", marginLeft: "15%", marginTop: RFPercentage(6), }} >
+                    <TouchableOpacity activeOpacity={1} style={{
+                        margin: RFPercentage(1),
+                        marginBottom: RFPercentage(2),
+                        marginRight: RFPercentage(2),
 
-                            backgroundColor: "white",
-                            // backgroundColor: (item.id % 2 == 0) ? colors.primary : "white",
-                            shadowColor: '#b5b5b5',
-                            shadowOffset: { width: 0, height: 0 },
-                            shadowOpacity: 0.8,
-                            shadowRadius: 3,
-                            elevation: 7,
+                        backgroundColor: "white",
+                        // backgroundColor: (item.id % 2 == 0) ? colors.primary : "white",
+                        shadowColor: '#b5b5b5',
+                        shadowOffset: { width: 0, height: 0 },
+                        shadowOpacity: 0.8,
+                        shadowRadius: 3,
+                        elevation: 7,
 
-                            borderRadius: RFPercentage(2),
-                            width: RFPercentage(40),
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexDirection: "column",
-                        }} >
-                            <DetailCard props={props} item={item} onUpdateLastCheck={() => updateLastCheck()} />
-                        </TouchableOpacity>
-                    </ScrollView>
-                </View>
-            }
+                        borderRadius: RFPercentage(2),
+                        width: RFPercentage(40),
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                    }} >
+                        <DetailCard props={props} onActivityIndi={activityIndi} item={item} onUpdateLastCheck={() => updateLastCheck()} />
+                    </TouchableOpacity>
+                </ScrollView>
+            </View>
         </View>
     );
 }
