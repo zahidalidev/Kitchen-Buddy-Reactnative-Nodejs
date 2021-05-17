@@ -50,8 +50,7 @@ function DetailCard({ props, item, onUpdateLastCheck }) {
                     {/* last check button */}
                     <View style={{ marginLeft: 25, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "90%" }}>
                         <Text numberOfLines={1} style={{ paddingTop: RFPercentage(1.2), width: "56%", paddingBottom: RFPercentage(1.2), color: colors.grey, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >Last check</Text>
-                        <AppTextButton onSubmit={() => onUpdateLastCheck()} buttonStyle={{ marginLeft: -13, backgroundColor: colors.red, height: RFPercentage(3.3), borderRadius: 25 }} textStyle={{ fontSize: RFPercentage(1.5) }} name={`${item.lastCheckDate} Days ago`} />
-                        {/* <Text numberOfLines={1} style={{ marginLeft: -13, paddingTop: RFPercentage(1.2), paddingBottom: RFPercentage(1.3), width: "44%", color: colors.red, fontSize: RFPercentage(2.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{"2 days ago"}</Text> */}
+                        <AppTextButton onSubmit={() => onUpdateLastCheck()} buttonStyle={{ marginLeft: -13, backgroundColor: item.lastCheckDate < 3 ? "green" : colors.red, height: RFPercentage(3.3), borderRadius: 25 }} textStyle={{ fontSize: RFPercentage(1.5) }} name={`${item.lastCheckDate} Days ago`} />
                     </View>
                 </> : null
             }

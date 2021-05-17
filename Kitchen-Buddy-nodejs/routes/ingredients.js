@@ -22,7 +22,6 @@ router.get("/:userId", async (req, res) => {
         conn.close();
         return res.status(500).send(error);
     }
-
 })
 
 router.get("/details/:id", async (req, res) => {
@@ -44,9 +43,7 @@ router.get("/details/:id", async (req, res) => {
         conn.close();
         return res.status(500).send(error);
     }
-
 })
-
 
 router.post("/:userId", async (req, res) => {
     const userId = req.params.userId;
@@ -70,7 +67,32 @@ router.post("/:userId", async (req, res) => {
             return res.send(response.rowsAffected)
         })
 
+    } catch (error) {
+        conn.close();
+        return res.status(500).send(error);
+    }
+})
 
+router.put("/lastCheck", async (req, res) => {
+    const { id, lastCheckDate } = req.body;
+    try {
+        await conn.connect();
+        const request = new sql.Request(conn);
+
+        request.query(`UPDATE ingredient SET lastCheckDate='${lastCheckDate}' WHERE id='${id}'`, (updateError, updateResponse) => {
+            if (updateError) {
+                conn.close();
+                return res.status(400).send(updateError);
+            }
+
+            request.query(`select lastCheckDate from ingredient where id = ${id}`, (error, response) => {
+                conn.close();
+                if (error) {
+                    return res.status(404).send(error);
+                }
+                return res.send(response.recordset[0]);
+            })
+        })
     } catch (error) {
         conn.close();
         return res.status(500).send(error);
@@ -99,11 +121,12 @@ router.put("/:id", async (req, res) => {
             return res.send(response.rowsAffected)
         })
 
-
     } catch (error) {
         conn.close();
         return res.status(500).send(error);
     }
 })
+
+
 
 module.exports = router;
