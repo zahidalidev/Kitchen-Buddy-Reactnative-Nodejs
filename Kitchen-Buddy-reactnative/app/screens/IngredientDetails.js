@@ -14,6 +14,7 @@ import DatesDifference from "../components/commmon/DatesDifference"
 function IngredientDetails(props) {
 
     const [activityIndi, setActivityIndi] = useState(false);
+    const [activityIndi2, setActivityIndi2] = useState(false);
     const [toastify, setToastify] = useState(false);
     const [item, setItem] = useState({});
 
@@ -34,13 +35,13 @@ function IngredientDetails(props) {
     }
 
     useEffect(() => {
-        const id = props.route.params.id;
+        const id = props.route.params.item.id;
         getIngredient(id);
-    }, [props.route.params.id]);
+    }, [props.route.params.item]);
 
     const updateLastCheck = async () => {
         try {
-            setActivityIndi(true);
+            setActivityIndi2(true);
             const body = {
                 id: item.id,
                 lastCheckDate: GetSqlDate(new Date())
@@ -54,7 +55,7 @@ function IngredientDetails(props) {
             console.log("last check update error: ", error);
             toastify.error("Updation Error");
         }
-        setActivityIndi(false);
+        setActivityIndi2(false);
     }
 
     return (
@@ -88,7 +89,11 @@ function IngredientDetails(props) {
                         justifyContent: "center",
                         flexDirection: "column",
                     }} >
-                        <DetailCard props={props} onActivityIndi={activityIndi} item={item} onUpdateLastCheck={() => updateLastCheck()} />
+                        {activityIndi ?
+                            <ActivityIndicator color={colors.primary} size={RFPercentage(6)} />
+                            :
+                            <DetailCard props={props} onActivityIndi={activityIndi2} item={item} onUpdateLastCheck={() => updateLastCheck()} />
+                        }
                     </TouchableOpacity>
                 </ScrollView>
             </View>

@@ -6,12 +6,16 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ReactNativeCrossPicker from "react-native-cross-picker"
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Toast from "toastify-react-native";
 
 import colors from '../config/colors';
 import AppTextInput from '../components/AppTextInput';
 import AppTextButton from '../components/AppTextButton';
+import { updateIngredient } from "../services/ingredientsService"
+import GetSqlDate from '../components/commmon/GetSqlDate';
 
 function UpdateIngredients(props) {
+    const [toastify, setToastify] = useState();
     const [name, setName] = useState('');
     const [brandName, setBrandName] = useState('');
     const [category, setCategory] = useState('')
@@ -20,7 +24,9 @@ function UpdateIngredients(props) {
     const [ripeness, setRipeness] = useState('')
     const [frozen, setFrozen] = useState('')
     const [openPacked, setOpenPacked] = useState('packed')
-    const [oldIngredientDetails, setOldIngredientDetails] = useState({});
+    const [oldRipenessEditedDate, setOldRipenessEditedDate] = useState('packed')
+    const [id, setId] = useState(null)
+    const [oldRipness, setOldRipness] = useState();
 
     // date
     const [date, setDate] = useState(new Date(1598051730000));
@@ -33,7 +39,8 @@ function UpdateIngredients(props) {
     };
 
     useEffect(() => {
-        const { name, brand, category, location, confectionType, ripeness, frozen, openPacked, expirationDate, id } = props.route.params.ingredientDetails;
+        const { name, brand, category, location, confectionType, ripeness, frozen, openPacked, expirationDate, ripenessEditedDate, id } = props.route.params.ingredientDetails;
+        setId(id);
         setName(name);
         setBrandName(brand);
         setCategory(category);
@@ -43,6 +50,9 @@ function UpdateIngredients(props) {
         setFrozen(frozen);
         setOpenPacked(openPacked);
         setDate(new Date(expirationDate));
+        setOldRipness(ripeness);
+        setOldRipenessEditedDate(ripenessEditedDate);
+
     }, [props.route.params.ingredientDetails])
 
     const categoryList = [
@@ -92,13 +102,49 @@ function UpdateIngredients(props) {
         />
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        if (name === '') {
+            toastify.error("Ingredient Name is required");
+            return;
+        }
 
+        let ripenessEditedDate = null;
+        if (confection === 'fresh' && ripeness !== '' && ripeness !== oldRipness) {
+            ripenessEditedDate = GetSqlDate(new Date());
+        }
+        if (confection === 'fresh' && ripeness !== '' && ripeness === oldRipness) {
+            ripenessEditedDate = oldRipenessEditedDate;
+        }
+
+        try {
+            const body = {
+                name,
+                brandName,
+                category,
+                location,
+                confectionType: confection,
+                ripeness,
+                ripenessEditedDate,
+                frozen,
+                openClose: openPacked,
+                expirationDate: GetSqlDate(date)
+            }
+            await updateIngredient(body, id);
+            toastify.success('Ingredient Updated Successfully');
+            setTimeout(() => {
+                props.navigation.navigate('home');
+            }, 2000)
+        } catch (error) {
+            console.log("Ingredient Update Error: ", error)
+            toastify.error('Ingredient Update Error');
+        }
     }
 
     return (
         <View style={styles.container}>
             <StatusBar style="light" backgroundColor={colors.primary} />
+
+            <Toast ref={(c) => setToastify(c)} />
 
             {/* Kitchen buddy top container */}
             <View style={{ backgroundColor: colors.primary, height: RFPercentage(16), width: "100%", flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
@@ -268,7 +314,7 @@ function UpdateIngredients(props) {
                         )}
                     </View>
 
-                    {/* Add button */}
+                    {/* Update button */}
                     <View style={{ marginBottom: RFPercentage(3), marginTop: RFPercentage(3), width: "85%", flex: 1, alignItems: "flex-end" }} >
                         <AppTextButton
                             name="Update Ingredient"

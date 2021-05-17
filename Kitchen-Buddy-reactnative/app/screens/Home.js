@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { RefreshControl, ActivityIndicator, Dimensions, FlatList, ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants'
 import { RFPercentage } from 'react-native-responsive-fontsize';
@@ -15,10 +15,24 @@ import GetSqlDate from '../components/commmon/GetSqlDate';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
+
 function Home(props) {
     const [searchValue, setSearchValue] = useState('');
     const [ingredients, setIngredients] = useState([]);
     const [activityIndic, setActivityIndic] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        getIngredients();
+        // wait(2000).then(() => setRefreshing(false));
+    }, []);
 
     const getIngredients = async () => {
         try {
@@ -30,6 +44,7 @@ function Home(props) {
                 return item;
             })
             setIngredients(allIngredients);
+            setRefreshing(false)
         } catch (error) {
             console.log("Error All ingredients: ", error)
         }
@@ -70,13 +85,18 @@ function Home(props) {
                     {/* Bottom Contaienr */}
                     <View style={{ flexDirection: 'column', marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 1.8, alignItems: 'center', justifyContent: 'center' }} >
                         <FlatList
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={refreshing}
+                                    onRefresh={onRefresh}
+                                />}
                             style={{ marginTop: RFPercentage(3) }}
                             showsVerticalScrollIndicator={false}
                             numColumns={2}
                             data={ingredients}
                             keyExtractor={(item, index) => item.id}
                             renderItem={({ item }) =>
-                                <TouchableOpacity onPress={() => props.navigation.navigate('ingredientDetails', { id: item.id })} activeOpacity={0.9} style={{
+                                <TouchableOpacity onPress={() => props.navigation.navigate('ingredientDetails', { item: item })} activeOpacity={0.9} style={{
                                     margin: RFPercentage(1),
                                     marginBottom: RFPercentage(1.5),
                                     marginRight: RFPercentage(2),

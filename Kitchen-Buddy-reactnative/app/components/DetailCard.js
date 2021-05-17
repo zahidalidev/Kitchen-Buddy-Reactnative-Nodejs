@@ -80,7 +80,7 @@ function DetailCard({ onActivityIndi, props, item, onUpdateLastCheck }) {
                     <MaterialCommunityIcons name="pencil" size={RFPercentage(2.2)} color={"#6f9cdb"} />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => (props.navigation.navigate('updateIngredients', { ingredientDetails: item }))} activeOpacity={0.8} style={{ flexDirection: "row", borderRadius: RFPercentage(3), borderWidth: 1, borderColor: colors.red, padding: RFPercentage(1), paddingLeft: RFPercentage(1.7), paddingRight: RFPercentage(1.7) }} >
+                <TouchableOpacity onPress={() => console.log("dell")} activeOpacity={0.8} style={{ flexDirection: "row", borderRadius: RFPercentage(3), borderWidth: 1, borderColor: colors.red, padding: RFPercentage(1), paddingLeft: RFPercentage(1.7), paddingRight: RFPercentage(1.7) }} >
                     <Text numberOfLines={1} style={{ fontSize: RFPercentage(2.2), color: colors.red, marginRight: 5 }} >Delete </Text>
                     <MaterialCommunityIcons name="trash-can" size={RFPercentage(2.2)} color={colors.red} />
                 </TouchableOpacity>

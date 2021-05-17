@@ -109,13 +109,13 @@ router.put("/:id", async (req, res) => {
         await conn.connect();
         const request = new sql.Request(conn);
 
-        request.query(`update ingredient name, brandName, category, location, confectionType, 
-            ripeness, ripenessEditedDate, frozen, openClose, expirationDate) 
-            values('${name}', '${brandName}', '${category}', '${location}', '${confectionType}'
-            , '${ripeness}', '${ripenessEditedDate}', '${frozen}', '${openClose}'
-            , '${expirationDate}')`, (error, response) => {
+        request.query(`UPDATE ingredient SET name='${name}', brandName='${brandName}', category='${category}',
+        location='${location}', confectionType='${confectionType}', ripeness='${ripeness}', ripenessEditedDate='${ripenessEditedDate}', 
+        frozen='${frozen}', openClose='${openClose}', expirationDate='${expirationDate}' WHERE id='${id}'`, (error, response) => {
             conn.close();
             if (error) {
+                console.log('id', error)
+
                 return res.status(400).send(error);
             }
             return res.send(response.rowsAffected)
