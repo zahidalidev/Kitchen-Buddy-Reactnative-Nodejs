@@ -7,7 +7,7 @@ import Toast from "toastify-react-native"
 
 import colors from '../config/colors';
 import DetailCard from '../components/DetailCard';
-import { getIngredientDetails } from '../services/ingredientsService';
+import { getIngredientDetails, updateRipnessCheck } from '../services/ingredientsService';
 import GetSqlDate from '../components/commmon/GetSqlDate';
 import DatesDifference from "../components/commmon/DatesDifference"
 
@@ -36,7 +36,26 @@ function IngredientDetails(props) {
     useEffect(() => {
         const id = props.route.params.id;
         getIngredient(id);
-    }, [props.route.params.id])
+    }, [props.route.params.id]);
+
+    const updateLastCheck = async () => {
+        try {
+            setActivityIndi(true);
+            const body = {
+                id: item.id,
+                lastCheckDate: GetSqlDate(new Date())
+            }
+            const { data } = await updateRipnessCheck(body);
+            let itemDetails = { ...item };
+            itemDetails.lastCheckDate = DatesDifference(new Date(data.lastCheckDate));
+            setItem(itemDetails);
+            toastify.success("Last check Updated");
+        } catch (error) {
+            console.log("last check update error: ", error);
+            toastify.error("Updation Error");
+        }
+        setActivityIndi(false);
+    }
 
     return (
         <View style={styles.container}>
@@ -73,7 +92,7 @@ function IngredientDetails(props) {
                             justifyContent: "center",
                             flexDirection: "column",
                         }} >
-                            <DetailCard props={props} item={item} />
+                            <DetailCard props={props} item={item} onUpdateLastCheck={() => updateLastCheck()} />
                         </TouchableOpacity>
                     </ScrollView>
                 </View>

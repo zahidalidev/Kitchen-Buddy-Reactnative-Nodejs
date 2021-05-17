@@ -14,3 +14,7 @@ export const getAllIngredients = async (userId) => {
 export const getIngredientDetails = async (id) => {
     return await axios.get(`${apiEndPoint}/details/${id}`);
 }
+
+export const updateRipnessCheck = async (body) => {
+    return await axios.put(`${apiEndPoint}/lastCheck`, body)
+}
