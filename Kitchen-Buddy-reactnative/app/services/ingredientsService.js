@@ -22,3 +22,8 @@ export const updateRipnessCheck = async (body) => {
 export const updateIngredient = async (body, id) => {
     return await axios.put(`${apiEndPoint}/${id}`, body)
 }
+
+export const removeIngredient = async (id) => {
+    return await axios.delete(`${apiEndPoint}/${id}`)
+}
+

@@ -113,8 +113,6 @@ router.put("/:id", async (req, res) => {
         frozen=${frozen == null ? null : `'${frozen}'`}, openClose=${openClose == null ? null : `'${openClose}'`}, expirationDate=${expirationDate == null ? null : `'${expirationDate}'`} WHERE id='${id}'`, (error, response) => {
             conn.close();
             if (error) {
-                console.log('id', error)
-
                 return res.status(400).send(error);
             }
             return res.send(response.rowsAffected)
@@ -126,4 +124,25 @@ router.put("/:id", async (req, res) => {
     }
 })
 
+
+router.delete("/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        await conn.connect();
+        const request = new sql.Request(conn);
+
+        request.query(`DELETE FROM ingredient WHERE id = ${id};`, (error, response) => {
+            conn.close();
+            if (error) {
+                return res.status(404).send(error);
+            }
+            return res.send(response.recordset);
+        })
+    } catch (error) {
+        conn.close();
+        return res.status(500).send(error);
+    }
+})
+
 module.exports = router;
+

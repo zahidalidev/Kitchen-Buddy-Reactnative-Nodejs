@@ -7,7 +7,7 @@ import Toast from "toastify-react-native"
 
 import colors from '../config/colors';
 import DetailCard from '../components/DetailCard';
-import { getIngredientDetails, updateRipnessCheck } from '../services/ingredientsService';
+import { getIngredientDetails, updateRipnessCheck, removeIngredient } from '../services/ingredientsService';
 import GetSqlDate from '../components/commmon/GetSqlDate';
 import DatesDifference from "../components/commmon/DatesDifference"
 
@@ -15,8 +15,24 @@ function IngredientDetails(props) {
 
     const [activityIndi, setActivityIndi] = useState(false);
     const [activityIndi2, setActivityIndi2] = useState(false);
+    const [activityIndi3, setActivityIndi3] = useState(false);
     const [toastify, setToastify] = useState(false);
     const [item, setItem] = useState({});
+
+    const deleteIngredient = async () => {
+        try {
+            setActivityIndi3(true)
+            await removeIngredient(item.id);
+            toastify.success('Successfully Deleted')
+            setTimeout(() => {
+                props.navigation.navigate('home')
+            }, 2000)
+        } catch (error) {
+            console.log('Deleteion Error: ', error)
+            toastify.error('Deletion Error')
+        }
+        setActivityIndi3(false)
+    }
 
     const getIngredient = async (id) => {
         try {
@@ -92,7 +108,7 @@ function IngredientDetails(props) {
                         {activityIndi ?
                             <ActivityIndicator color={colors.primary} size={RFPercentage(6)} />
                             :
-                            <DetailCard props={props} onActivityIndi={activityIndi2} item={item} onUpdateLastCheck={() => updateLastCheck()} />
+                            <DetailCard props={props} onDeleteIngredient={() => deleteIngredient()} onActivityInd3={activityIndi3} onActivityIndi={activityIndi2} item={item} onUpdateLastCheck={() => updateLastCheck()} />
                         }
                     </TouchableOpacity>
                 </ScrollView>

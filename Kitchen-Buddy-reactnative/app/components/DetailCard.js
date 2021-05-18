@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { RFPercentage } from 'react-native-responsive-fontsize';
@@ -7,8 +7,7 @@ import Constants from 'expo-constants'
 import colors from '../config/colors';
 import AppTextButton from './AppTextButton';
 
-function DetailCard({ onActivityIndi, props, item, onUpdateLastCheck }) {
-
+function DetailCard({ onActivityIndi, onActivityInd3, props, item, onUpdateLastCheck, onDeleteIngredient }) {
 
     return (
         <View style={{ padding: RFPercentage(2), flex: 1, width: "100%", flexDirection: "column", alignItems: "center", justifyContent: "flex-start" }} >
@@ -80,10 +79,14 @@ function DetailCard({ onActivityIndi, props, item, onUpdateLastCheck }) {
                     <MaterialCommunityIcons name="pencil" size={RFPercentage(2.2)} color={"#6f9cdb"} />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => console.log("dell")} activeOpacity={0.8} style={{ flexDirection: "row", borderRadius: RFPercentage(3), borderWidth: 1, borderColor: colors.red, padding: RFPercentage(1), paddingLeft: RFPercentage(1.7), paddingRight: RFPercentage(1.7) }} >
-                    <Text numberOfLines={1} style={{ fontSize: RFPercentage(2.2), color: colors.red, marginRight: 5 }} >Delete </Text>
-                    <MaterialCommunityIcons name="trash-can" size={RFPercentage(2.2)} color={colors.red} />
-                </TouchableOpacity>
+                {onActivityInd3 ?
+                    <ActivityIndicator color={colors.primary} size={RFPercentage(6)} />
+                    :
+                    <TouchableOpacity onPress={() => onDeleteIngredient()} activeOpacity={0.8} style={{ flexDirection: "row", borderRadius: RFPercentage(3), borderWidth: 1, borderColor: colors.red, padding: RFPercentage(1), paddingLeft: RFPercentage(1.7), paddingRight: RFPercentage(1.7) }} >
+                        <Text numberOfLines={1} style={{ fontSize: RFPercentage(2.2), color: colors.red, marginRight: 5 }} >Delete </Text>
+                        <MaterialCommunityIcons name="trash-can" size={RFPercentage(2.2)} color={colors.red} />
+                    </TouchableOpacity>
+                }
 
             </View>
 
