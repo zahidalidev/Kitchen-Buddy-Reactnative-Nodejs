@@ -58,7 +58,7 @@ router.post("/:userId", async (req, res) => {
         request.query(`insert into ingredient (name, brandName, category, location, confectionType, 
             ripeness, ripenessEditedDate, frozen, openClose, expirationDate, userId) 
             values('${name}', '${brandName}', '${category}', '${location}', '${confectionType}'
-            , '${ripeness}', '${ripenessEditedDate}', '${frozen}', '${openClose}'
+            , '${ripeness}', ${ripenessEditedDate == null ? null : `'${ripenessEditedDate}'`}, '${frozen}', '${openClose}'
             , '${expirationDate}', '${userId}')`, (error, response) => {
             conn.close();
             if (error) {
