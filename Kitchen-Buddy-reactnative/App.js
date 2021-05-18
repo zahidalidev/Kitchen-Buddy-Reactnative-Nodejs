@@ -50,7 +50,7 @@ export default function App(props) {
     return (
       <Tab.Navigator initialRouteName="Home" tabBarOptions={{
         style: { height: 60 },
-        labelStyle: { fontSize: RFPercentage(1.7), fontWeight: '500', marginBottom: RFPercentage(1.2) },
+        labelStyle: { fontSize: RFPercentage(1.4), fontWeight: '500', marginBottom: RFPercentage(1.2) },
         activeTintColor: colors.primary, inactiveTintColor: colors.grey, tabStyle: { backgroundColor: colors.white, fontSize: 30 }
       }} >
         <Tab.Screen
