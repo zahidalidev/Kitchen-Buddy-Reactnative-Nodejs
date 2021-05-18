@@ -45,6 +45,26 @@ router.get("/details/:id", async (req, res) => {
     }
 })
 
+router.get("/expire/:userId/:expirationDate", async (req, res) => {
+    const {userId, expirationDate} = req.params;
+    try {
+        await conn.connect();
+        const request = new sql.Request(conn);
+
+        request.query(`select id, name, category, location, confectionType, expirationDate
+        from ingredient where userId = ${userId} AND expirationDate < '${expirationDate}'`, (error, response) => {
+            conn.close();
+            if (error) {
+                return res.status(404).send(error);
+            }
+            return res.send(response.recordset);
+        })
+    } catch (error) {
+        conn.close();
+        return res.status(500).send(error);
+    }
+})
+
 router.post("/:userId", async (req, res) => {
     const userId = req.params.userId;
     const { name, brandName, category, location, confectionType,

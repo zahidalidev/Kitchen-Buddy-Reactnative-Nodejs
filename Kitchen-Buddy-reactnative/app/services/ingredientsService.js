@@ -27,3 +27,6 @@ export const removeIngredient = async (id) => {
     return await axios.delete(`${apiEndPoint}/${id}`)
 }
 
+export const getExpireSoonIngredients = async (userId, expirationDate) => {
+    return await axios.get(`${apiEndPoint}/expire/${userId}/${expirationDate}`);
+}

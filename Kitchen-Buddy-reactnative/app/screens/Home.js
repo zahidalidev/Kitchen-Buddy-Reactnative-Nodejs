@@ -15,12 +15,6 @@ import GetSqlDate from '../components/commmon/GetSqlDate';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-
-const wait = (timeout) => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-}
-
-
 function Home(props) {
     const [searchValue, setSearchValue] = useState('');
     const [ingredients, setIngredients] = useState([]);
@@ -31,7 +25,6 @@ function Home(props) {
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         getIngredients();
-        // wait(2000).then(() => setRefreshing(false));
     }, []);
 
     const getIngredients = async () => {
