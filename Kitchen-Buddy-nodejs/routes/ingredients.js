@@ -104,14 +104,13 @@ router.put("/:id", async (req, res) => {
     const { name, brandName, category, location, confectionType,
         ripeness, ripenessEditedDate, frozen,
         openClose, expirationDate } = req.body;
-
     try {
         await conn.connect();
         const request = new sql.Request(conn);
 
-        request.query(`UPDATE ingredient SET name='${name}', brandName='${brandName}', category='${category}',
-        location='${location}', confectionType='${confectionType}', ripeness='${ripeness}', ripenessEditedDate='${ripenessEditedDate}', 
-        frozen='${frozen}', openClose='${openClose}', expirationDate='${expirationDate}' WHERE id='${id}'`, (error, response) => {
+        request.query(`UPDATE ingredient SET name='${name}', brandName=${brandName == null ? null : `'${brandName}'`}, category=${category == null ? null : `'${category}'`},
+        location=${location == null ? null : `'${location}'`}, confectionType=${confectionType == null ? null : `'${confectionType}'`}, ripeness=${ripeness == null ? null : `'${ripeness}'`}, ripenessEditedDate=${ripenessEditedDate == null ? null : `'${ripenessEditedDate}'`}, 
+        frozen=${frozen == null ? null : `'${frozen}'`}, openClose=${openClose == null ? null : `'${openClose}'`}, expirationDate=${expirationDate == null ? null : `'${expirationDate}'`} WHERE id='${id}'`, (error, response) => {
             conn.close();
             if (error) {
                 console.log('id', error)
@@ -126,7 +125,5 @@ router.put("/:id", async (req, res) => {
         return res.status(500).send(error);
     }
 })
-
-
 
 module.exports = router;
