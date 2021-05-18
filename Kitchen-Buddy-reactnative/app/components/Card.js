@@ -15,8 +15,8 @@ function Card({ title, confectionType, expirationDate, location, category }) {
                 <Text numberOfLines={1} style={{ borderTopRightRadius: RFPercentage(1.5), borderBottomLeftRadius: RFPercentage(1.5), backgroundColor: "green", padding: RFPercentage(1), color: colors.white }} >{confectionType}</Text>
             </View>
 
-            <View style={{ position: "absolute", left: RFPercentage(3), top: RFPercentage(0.8), width: "75%" }} >
-                <Text numberOfLines={1} style={{ color: colors.primaryLight, fontSize: RFPercentage(3.2), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{title}</Text>
+            <View style={{ position: "absolute", left: RFPercentage(2), top: RFPercentage(1.3), width: "75%" }} >
+                <Text numberOfLines={1} style={{ color: colors.primaryLight, fontSize: RFPercentage(2.7), fontWeight: Constants.platform === "ios" ? "300" : "bold" }} >{title}</Text>
             </View>
 
             <View style={{ width: "70%", flexDirection: "row", marginLeft: RFPercentage(2), padding: 1, marginTop: RFPercentage(3) }} >
