@@ -55,7 +55,7 @@ function Login(props) {
     }
 
     // get token from AsyncStorage to confirm login or logout
-    let getToken = async () => {
+    let validateWithToken = async () => {
         // await AsyncStorage.removeItem('token');
         try {
             let res = await AsyncStorage.getItem('token');
@@ -69,10 +69,7 @@ function Login(props) {
     }
 
     useEffect(() => {
-        getToken();
-        if (props.route.params !== undefined && props.route.params.registration) {
-            toastify.success("Registration Successful");
-        }
+        validateWithToken();
     }, [props.route.params]);
 
     return (

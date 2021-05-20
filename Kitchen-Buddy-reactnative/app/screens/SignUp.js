@@ -13,7 +13,6 @@ import Toast from 'toastify-react-native';
 function SignUp(props) {
     const [toastify, setToastify] = useState();
     const [indicator, setIndicator] = useState(false);
-    const [inc, setInc] = useState(1);
 
     const [feilds, setFeilds] = useState([
         {
@@ -76,8 +75,10 @@ function SignUp(props) {
         try {
             await registerUser(body);
             setIndicator(false);
-            setInc(inc + 1);
-            props.navigation.navigate('login', { registration: inc })
+            setTimeout(() => {
+                toastify.success("Registration Successful");
+            }, 2000)
+            props.navigation.navigate('login')
         } catch (error) {
             toastify.error("Registration Failed");
             setIndicator(false);
