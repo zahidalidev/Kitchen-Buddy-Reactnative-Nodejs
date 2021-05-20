@@ -21,6 +21,7 @@ import Login from './app/screens/Login';
 import SignUp from './app/screens/SignUp';
 import Home from './app/screens/Home';
 import AddIngredients from './app/screens/AddIngredients';
+import BarcodeAddIngredients from './app/screens/BarcodeAddIngredients';
 import UpdateIngredients from './app/screens/UpdateIngredients';
 import IngredientDetails from './app/screens/IngredientDetails';
 import ExpireSoon from './app/screens/ExpireSoon';
@@ -85,7 +86,7 @@ export default function App(props) {
         />
         <Tab.Screen
           name="scaBarcode"
-          component={AddIngredients}
+          component={BarcodeAddIngredients}
           options={{
             tabBarLabel: 'Barcode Scan',
             tabBarIcon: ({ color, size }) => (

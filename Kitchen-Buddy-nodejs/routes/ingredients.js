@@ -46,7 +46,7 @@ router.get("/details/:id", async (req, res) => {
 })
 
 router.get("/expire/:userId/:expirationDate", async (req, res) => {
-    const {userId, expirationDate} = req.params;
+    const { userId, expirationDate } = req.params;
     try {
         await conn.connect();
         const request = new sql.Request(conn);
@@ -65,6 +65,115 @@ router.get("/expire/:userId/:expirationDate", async (req, res) => {
     }
 })
 
+router.get("/filter/:userId/:category/:location/:confectionType", async (req, res) => {
+    const { userId, category, location, confectionType } = req.params;
+
+    try {
+        await conn.connect();
+        const request = new sql.Request(conn);
+
+        if (category != 'all' && location != 'all' && confectionType != 'all') {
+            request.query(`select id, name, category, location, confectionType, expirationDate
+            from ingredient where userId = ${userId} AND category = '${category}' AND location = '${location}' 
+            AND confectionType = '${confectionType}'`, (error, response) => {
+                conn.close();
+                if (error) {
+                    return res.status(404).send(error);
+                }
+                return res.send(response.recordset);
+            })
+        }
+
+        // Single combinations
+        if (category == 'all' && location != 'all' && confectionType != 'all') {
+            request.query(`select id, name, category, location, confectionType, expirationDate
+            from ingredient where userId = ${userId} AND location = '${location}' 
+            AND confectionType = '${confectionType}'`, (error, response) => {
+                conn.close();
+                if (error) {
+                    return res.status(404).send(error);
+                }
+                return res.send(response.recordset);
+            })
+        }
+
+        if (category != 'all' && location == 'all' && confectionType != 'all') {
+            request.query(`select id, name, category, location, confectionType, expirationDate
+            from ingredient where userId = ${userId} AND category = '${category}' 
+            AND confectionType = '${confectionType}'`, (error, response) => {
+                conn.close();
+                if (error) {
+                    return res.status(404).send(error);
+                }
+                return res.send(response.recordset);
+            })
+        }
+
+        if (category != 'all' && location != 'all' && confectionType == 'all') {
+            request.query(`select id, name, category, location, confectionType, expirationDate
+            from ingredient where userId = ${userId} AND category = '${category}' 
+            AND location = '${location}'`, (error, response) => {
+                conn.close();
+                if (error) {
+                    return res.status(404).send(error);
+                }
+                return res.send(response.recordset);
+            })
+        }
+
+        // double combinations
+        if (category != 'all' && location == 'all' && confectionType == 'all') {
+            request.query(`select id, name, category, location, confectionType, expirationDate
+            from ingredient where userId = ${userId} AND category = '${category}'`, (error, response) => {
+                conn.close();
+                if (error) {
+                    return res.status(404).send(error);
+                }
+                return res.send(response.recordset);
+            })
+        }
+
+        if (category == 'all' && location != 'all' && confectionType == 'all') {
+            request.query(`select id, name, category, location, confectionType, expirationDate
+            from ingredient where userId = ${userId} AND location = '${location}'`, (error, response) => {
+                conn.close();
+                if (error) {
+                    return res.status(404).send(error);
+                }
+                return res.send(response.recordset);
+            })
+        }
+
+        if (category == 'all' && location == 'all' && confectionType != 'all') {
+            request.query(`select id, name, category, location, confectionType, expirationDate
+            from ingredient where userId = ${userId} AND confectionType = '${confectionType}'`, (error, response) => {
+                conn.close();
+                if (error) {
+                    return res.status(404).send(error);
+                }
+                return res.send(response.recordset);
+            })
+        }
+
+        // all null
+        if (category == 'all' && location == 'all' && confectionType == 'all') {
+            request.query(`select id, name, category, location, confectionType, expirationDate
+            from ingredient where userId = ${userId}`, (error, response) => {
+                conn.close();
+                if (error) {
+                    return res.status(404).send(error);
+                }
+                return res.send(response.recordset);
+            })
+        }
+
+
+    } catch (error) {
+        conn.close();
+        return res.status(500).send(error);
+    }
+})
+
 router.post("/:userId", async (req, res) => {
     const userId = req.params.userId;
     const { name, brandName, category, location, confectionType,
@@ -74,6 +183,22 @@ router.post("/:userId", async (req, res) => {
     try {
         await conn.connect();
         const request = new sql.Request(conn);
+
+        request.query(`select from category where name='${category}'`, (caError, caResponce) => {
+            if (caError) {
+                conn.close();
+                return res.status(400).send(error);
+            }
+
+            if (caResponce.recordset.length == 0) {
+                request.query(`insert into category (name) values('${category}')`, (insError, insResponce) => {
+                    if (insError) {
+                        conn.close();
+                        return res.status(400).send(error);
+                    }
+                })
+            }
+        })
 
         request.query(`insert into ingredient (name, brandName, category, location, confectionType, 
             ripeness, ripenessEditedDate, frozen, openClose, expirationDate, userId) 
@@ -127,6 +252,22 @@ router.put("/:id", async (req, res) => {
     try {
         await conn.connect();
         const request = new sql.Request(conn);
+
+        request.query(`select from category where name='${category}'`, (caError, caResponce) => {
+            if (caError) {
+                conn.close();
+                return res.status(400).send(error);
+            }
+
+            if (caResponce.recordset.length == 0) {
+                request.query(`insert into category (name) values('${category}')`, (insError, insResponce) => {
+                    if (insError) {
+                        conn.close();
+                        return res.status(400).send(error);
+                    }
+                })
+            }
+        })
 
         request.query(`UPDATE ingredient SET name='${name}', brandName=${brandName == null ? null : `'${brandName}'`}, category=${category == null ? null : `'${category}'`},
         location=${location == null ? null : `'${location}'`}, confectionType=${confectionType == null ? null : `'${confectionType}'`}, ripeness=${ripeness == null ? null : `'${ripeness}'`}, ripenessEditedDate=${ripenessEditedDate == null ? null : `'${ripenessEditedDate}'`}, 

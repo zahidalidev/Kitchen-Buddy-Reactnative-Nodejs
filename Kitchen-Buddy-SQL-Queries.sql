@@ -40,3 +40,31 @@ CREATE TABLE ingredient (
   PRIMARY KEY (id),
   userId INT NOT NULL foreign key references customer(id)
 )
+
+-- -----------------------------------------------------
+-- Table category
+-- -----------------------------------------------------
+CREATE TABLE category (
+  id INT NOT NULL IDENTITY,
+  name VARCHAR(155) NOT NULL,
+  PRIMARY KEY (id)
+)
+
+-- -----------------------------------------------------
+-- Table location
+-- -----------------------------------------------------
+CREATE TABLE location (
+  id INT NOT NULL IDENTITY,
+  name VARCHAR(155) NOT NULL,
+  PRIMARY KEY (id)
+)
+
+-- -----------------------------------------------------
+-- Table confectionType
+-- -----------------------------------------------------
+CREATE TABLE confectionType (
+  id INT NOT NULL IDENTITY,
+  name VARCHAR(155) NOT NULL,
+  PRIMARY KEY (id)
+)
+

@@ -6,34 +6,32 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ReactNativeCrossPicker from "react-native-cross-picker"
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Toast from "toastify-react-native";
+import Toast from 'toastify-react-native';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import colors from '../config/colors';
 import AppTextInput from '../components/AppTextInput';
 import AppTextButton from '../components/AppTextButton';
-import { updateIngredient } from "../services/ingredientsService"
-import GetSqlDate from '../components/commmon/GetSqlDate';
-import { getCategories, getLocations, getConfectionTypes } from '../services/otherServices';
+import GetSqlDate from "../components/commmon/GetSqlDate"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AddIngredient } from '../services/ingredientsService';
+import { getProductDetails } from '../services/productService';
 
-function UpdateIngredients(props) {
-    const [toastify, setToastify] = useState();
+function BarcodeAddIngredients(props) {
+    const [Toastify, setToastify] = useState();
     const [name, setName] = useState('');
     const [brandName, setBrandName] = useState('');
     const [category, setCategory] = useState('')
     const [location, setLocation] = useState('')
     const [confection, setConfection] = useState('')
+    const [openPacked, setOpenPacked] = useState('packed')
     const [ripeness, setRipeness] = useState('')
     const [frozen, setFrozen] = useState('')
-    const [openPacked, setOpenPacked] = useState('packed')
-    const [oldRipenessEditedDate, setOldRipenessEditedDate] = useState('packed')
-    const [id, setId] = useState(null)
-    const [oldRipness, setOldRipness] = useState();
-    const [categoryList, setCategoryList] = useState([{ label: "", value: "" }])
-    const [locationList, setLocationList] = useState([{ label: "", value: "" }])
-    const [confectionList, setConfectionList] = useState([{ label: "", value: "" }])
+    const [hasPermission, setHasPermission] = useState(null);
+    const [scanned, setScanned] = useState(false);
 
     // date
-    const [date, setDate] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
 
     const onChange = (event, selectedDate) => {
@@ -41,66 +39,81 @@ function UpdateIngredients(props) {
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
     };
-    const allCategories = async () => {
-        try {
-            const { data } = await getCategories();
-            let list = data.map(item => {
-                return { label: item.name, value: item.name };
-            })
-            setCategoryList(list);
-        } catch (error) {
-            console.log(error)
-            // Toastify.error('Error in getting categories');
-        }
+
+    const getPermission = async () => {
+        const { status } = await BarCodeScanner.requestPermissionsAsync();
+        setHasPermission(status === 'granted');
     }
 
-    const allLocations = async () => {
-        try {
-            const { data } = await getLocations();
-            let list = data.map(item => {
-                return { label: item.name, value: item.name };
-            })
-            setLocationList(list);
-        } catch (error) {
-            console.log(error)
-            // Toastify.error('Error in getting categories');
-        }
-    }
-
-    const allConfectionTypes = async () => {
-        try {
-            const { data } = await getConfectionTypes();
-            let list = data.map(item => {
-                return { label: item.name, value: item.name };
-            })
-            setConfectionList(list);
-        } catch (error) {
-            console.log(error)
-            // Toastify.error('Error in getting categories');
-        }
-    }
+    const handleBarCodeScanned = ({ type, data }) => {
+        setScanned(true);
+        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    };
 
     useEffect(() => {
-        const { name, brand, category, location, confectionType, ripeness, frozen, openPacked, expirationDate, ripenessEditedDate, id } = props.route.params.ingredientDetails;
-        setId(id);
-        setName(name);
-        setBrandName(brand);
-        setCategory(category);
-        setLocation(location);
-        setConfection(confectionType);
-        setRipeness(ripeness);
-        setFrozen(frozen);
-        setOpenPacked(openPacked);
-        setDate(new Date(expirationDate));
-        setOldRipness(ripeness);
-        setOldRipenessEditedDate(ripenessEditedDate);
+        getPermission();
+        setScanned(false);
+    }, [])
 
-        allCategories();
-        allLocations();
-        allConfectionTypes();
+    const handleSubmit = async () => {
+        if (name === '') {
+            Toastify.error("Ingredient Name is required");
+            return;
+        }
 
-    }, [props.route.params.ingredientDetails])
+        let ripenessEditedDate = null;
+        if (confection === 'fresh') {
+            ripenessEditedDate = GetSqlDate(new Date());
+        }
 
+        try {
+            let userId = await AsyncStorage.getItem('token');
+
+            const body = {
+                name,
+                brandName,
+                category,
+                location,
+                confectionType: confection,
+                ripeness,
+                ripenessEditedDate,
+                frozen,
+                openClose: openPacked,
+                expirationDate: GetSqlDate(date)
+            }
+
+            await AddIngredient(body, userId);
+            Toastify.success('Ingredient Added Successfully');
+        } catch (error) {
+            console.log("ingredients Added Error: ", error)
+            Toastify.error('Ingredient is not Added');
+        }
+    }
+
+    const categoryList = [
+        { label: "fruit", value: "fruit" },
+        { label: "vegetable", value: "vegetable" },
+        { label: "dairy", value: "dairy" },
+        { label: "fish", value: "fish" },
+        { label: "meat", value: "meat" },
+        { label: "liquid", value: "liquid" },
+        { label: "other", value: "other" }
+    ];
+
+    const locationList = [
+        { label: "fridge", value: "fridge" },
+        { label: "freezer", value: "freezer" },
+        { label: "pantry", value: "pantry" },
+        { label: "other", value: "other" }
+    ];
+
+    const confectionList = [
+        { label: "fresh", value: "fresh" },
+        { label: "canned", value: "canned" },
+        { label: "frozen", value: "frozen" },
+        { label: "cured", value: "cured" },
+        { label: "other", value: "other" }
+    ];
     const openPackedList = [
         { label: "packed", value: "packed" },
         { label: "open", value: "open" },
@@ -124,53 +137,15 @@ function UpdateIngredients(props) {
         />
     }
 
-    const handleSubmit = async () => {
-        if (name === '') {
-            toastify.error("Ingredient Name is required");
-            return;
-        }
-
-        let ripenessEditedDate = null;
-        if (confection === 'fresh' && ripeness !== '' && ripeness !== oldRipness) {
-            ripenessEditedDate = GetSqlDate(new Date());
-        }
-        if (confection === 'fresh' && ripeness !== '' && ripeness === oldRipness) {
-            ripenessEditedDate = oldRipenessEditedDate;
-        }
-
-        try {
-            const body = {
-                name,
-                brandName,
-                category,
-                location,
-                confectionType: confection,
-                ripeness,
-                ripenessEditedDate,
-                frozen,
-                openClose: openPacked,
-                expirationDate: GetSqlDate(date)
-            }
-            await updateIngredient(body, id);
-            toastify.success('Ingredient Updated Successfully');
-            setTimeout(() => {
-                props.navigation.navigate('home');
-            }, 2000)
-        } catch (error) {
-            console.log("Ingredient Update Error: ", error)
-            toastify.error('Ingredient Update Error');
-        }
-    }
-
     return (
         <View style={styles.container}>
             <StatusBar style="light" backgroundColor={colors.primary} />
 
-            <Toast ref={(c) => setToastify(c)} />
+            <Toast ref={(t) => setToastify(t)} />
 
             {/* Kitchen buddy top container */}
             <View style={{ backgroundColor: colors.primary, height: RFPercentage(16), width: "100%", flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
-                <Text style={{ top: RFPercentage(2), color: colors.white, fontSize: Platform.OS === "ios" ? RFPercentage(2.5) : RFPercentage(4.5) }} >Update Ingredient</Text>
+                <Text style={{ top: RFPercentage(2), color: colors.white, fontSize: Platform.OS === "ios" ? RFPercentage(2.5) : RFPercentage(4.5) }} >Add Ingredients</Text>
             </View>
 
             {/* Bottom Contaienr */}
@@ -336,10 +311,10 @@ function UpdateIngredients(props) {
                         )}
                     </View>
 
-                    {/* Update button */}
+                    {/* Add button */}
                     <View style={{ marginBottom: RFPercentage(3), marginTop: RFPercentage(3), width: "85%", flex: 1, alignItems: "flex-end" }} >
                         <AppTextButton
-                            name="Update Ingredient"
+                            name="Add Ingredient"
                             borderRadius={RFPercentage(1.3)}
                             onSubmit={() => handleSubmit()}
                             backgroundColor={colors.primary}
@@ -347,6 +322,12 @@ function UpdateIngredients(props) {
                             height={RFPercentage(5.5)}
                         />
                     </View>
+
+                    <BarCodeScanner
+                        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                        style={StyleSheet.absoluteFillObject}
+                    />
+                    {scanned && <AppTextButton name='Tap to Scan Again' backgroundColor={colors.primary} onSubmit={() => setScanned(false)} />}
 
                 </ScrollView>
             </View>
@@ -365,4 +346,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default UpdateIngredients;
+export default BarcodeAddIngredients;
