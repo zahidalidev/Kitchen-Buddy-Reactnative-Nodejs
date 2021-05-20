@@ -46,7 +46,6 @@ function Home(props) {
 
     useEffect(() => {
         getIngredients();
-
     }, []);
 
     return (
