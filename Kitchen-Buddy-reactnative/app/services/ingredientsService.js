@@ -30,3 +30,7 @@ export const removeIngredient = async (id) => {
 export const getExpireSoonIngredients = async (userId, expirationDate) => {
     return await axios.get(`${apiEndPoint}/expire/${userId}/${expirationDate}`);
 }
+
+export const getIngredientsByFilters = async (userId, category, location, confectionType) => {
+    return await axios.get(`${apiEndPoint}/filter/${userId}/${category}/${location}/${confectionType}`);
+}

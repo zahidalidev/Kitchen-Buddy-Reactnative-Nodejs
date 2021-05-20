@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Dimensions, FlatList, Image, ImageBackground, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Dimensions, FlatList, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants'
 import { RFPercentage } from 'react-native-responsive-fontsize';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons"
 
 import colors from '../config/colors';
 import Card from '../components/Card';
 import ReactNativeCrossPicker from 'react-native-cross-picker';
 import AppTextButton from '../components/AppTextButton';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+import GetSqlDate from '../components/commmon/GetSqlDate';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getIngredientsByFilters } from "../services/ingredientsService";
 
 function Categories(props) {
+    const [activityIndic, setActivityIndic] = useState(false);
     const [ingredients, setIngredients] = useState([]);
     const [category, setCategory] = useState('')
     const [location, setLocation] = useState('')
@@ -45,102 +44,27 @@ function Categories(props) {
         { label: "all", value: "all" }
     ];
 
-    const getIngredients = () => {
-        setIngredients([
-            {
-                id: 1,
-                name: "chicken",
-                category: "meat",
-                location: "fridge",
-                confectionType: "fresh",
-                expirationDate: "22-02-2021"
-            },
-            {
-                id: 2,
-                name: "chicken",
-                category: "meat",
-                location: "fridge",
-                confectionType: "fresh",
-                expirationDate: "22-02-2021"
-            },
-            {
-                id: 3,
-                name: "chicken",
-                category: "meat",
-                location: "fridge",
-                confectionType: "fresh",
-                expirationDate: "22-02-2021"
-            },
-            {
-                id: 4,
-                name: "chicken",
-                category: "meat",
-                location: "fridge",
-                confectionType: "fresh",
-                expirationDate: "22-02-2021"
-            },
-            {
-                id: 5,
-                name: "chicken",
-                category: "meat",
-                location: "fridge",
-                confectionType: "fresh",
-                expirationDate: "22-02-2021"
-            }, {
-                id: 6,
-                name: "chicken",
-                category: "meat",
-                location: "fridge",
-                confectionType: "fresh",
-                expirationDate: "22-02-2021"
-            },
-            {
-                id: 7,
-                name: "chicken",
-                category: "meat",
-                location: "fridge",
-                confectionType: "fresh",
-                expirationDate: "22-02-2021"
-            },
-            {
-                id: 8,
-                name: "chicken",
-                category: "meat",
-                location: "fridge",
-                confectionType: "fresh",
-                expirationDate: "22-02-2021"
-            },
-            {
-                id: 9,
-                name: "chicken",
-                category: "meat",
-                location: "fridge",
-                confectionType: "fresh",
-                expirationDate: "22-02-2021"
-            },
-            {
-                id: 10,
-                name: "chicken",
-                category: "meat",
-                location: "fridge",
-                confectionType: "fresh",
-                expirationDate: "22-02-2021"
-            },
+    const getIngredients = async () => {
+        try {
+            setActivityIndic(true)
+            const userId = await AsyncStorage.getItem('token');
+            const { data } = await getIngredientsByFilters(userId, category, location, confection);
+            const allIngredients = data.map(item => {
+                item.expirationDate = GetSqlDate(new Date(item.expirationDate));
+                return item;
+            })
+            setIngredients(allIngredients);
+        } catch (error) {
+            console.log("Error All ingredients: ", error)
+        }
+        setActivityIndic(false);
 
-        ]);
     }
 
     useEffect(() => {
         getIngredients();
     }, []);
 
-    const iconCategory = () => {
-        return <MaterialCommunityIcons
-            name={"chevron-down"}
-            size={20}
-            color={"grey"}
-        />
-    }
     return (
         <View style={styles.container}>
             <StatusBar style="light" backgroundColor={colors.primary} />
@@ -199,41 +123,47 @@ function Categories(props) {
 
                     {/* search button */}
                     <View style={{ flexDirection: "column", width: "45%", alignItems: "center", justifyContent: "center" }} >
-                        <AppTextButton name="Search" width="80%" buttonStyle={{ backgroundColor: colors.primary, borderRadius: 25, height: RFPercentage(5.5) }} />
+                        <AppTextButton onSubmit={() => getIngredients()} name="Search" width="80%" buttonStyle={{ backgroundColor: colors.primary, borderRadius: 25, height: RFPercentage(5.5) }} />
                     </View>
 
                 </View>
 
-                <FlatList
-                    style={{ marginTop: RFPercentage(3) }}
-                    showsVerticalScrollIndicator={false}
-                    numColumns={2}
-                    data={ingredients}
-                    keyExtractor={(item, index) => item.id}
-                    renderItem={({ item }) =>
-                        <TouchableOpacity onPress={() => props.navigation.navigate('ingredientDetails', { item })} activeOpacity={0.9} style={{
-                            margin: RFPercentage(1),
-                            marginBottom: RFPercentage(1.5),
-                            marginRight: RFPercentage(2),
+                {activityIndic ?
+                    <View style={{ marginTop: RFPercentage(3), flex: 1, justifyContent: "center", alignItems: "center" }} >
+                        <ActivityIndicator color={colors.primary} size={RFPercentage(6)} />
+                    </View>
+                    :
+                    <FlatList
+                        style={{ marginTop: RFPercentage(3) }}
+                        showsVerticalScrollIndicator={false}
+                        numColumns={2}
+                        data={ingredients}
+                        keyExtractor={(item, index) => item.id}
+                        renderItem={({ item }) =>
+                            <TouchableOpacity onPress={() => props.navigation.navigate('ingredientDetails', { item })} activeOpacity={0.9} style={{
+                                margin: RFPercentage(1),
+                                marginBottom: RFPercentage(1.5),
+                                marginRight: RFPercentage(2),
 
-                            backgroundColor: "white",
-                            shadowColor: '#b5b5b5',
-                            shadowOffset: { width: 0, height: 0 },
-                            shadowOpacity: 0.8,
-                            shadowRadius: 3,
-                            elevation: 7,
+                                backgroundColor: "white",
+                                shadowColor: '#b5b5b5',
+                                shadowOffset: { width: 0, height: 0 },
+                                shadowOpacity: 0.8,
+                                shadowRadius: 3,
+                                elevation: 7,
 
-                            borderRadius: RFPercentage(2),
-                            width: RFPercentage(20), height: RFPercentage(14),
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexDirection: "column",
-                        }} >
-                            <Card title={item.name} confectionType={item.confectionType} expirationDate={item.expirationDate} location={item.location} category={item.category} />
-                        </TouchableOpacity>
+                                borderRadius: RFPercentage(2),
+                                width: RFPercentage(20), height: RFPercentage(14),
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexDirection: "column",
+                            }} >
+                                <Card title={item.name} confectionType={item.confectionType} expirationDate={item.expirationDate} location={item.location} category={item.category} />
+                            </TouchableOpacity>
 
-                    }
-                />
+                        }
+                    />
+                }
 
             </View>
 
