@@ -48,7 +48,11 @@ function Categories(props) {
         try {
             setActivityIndic(true)
             const userId = await AsyncStorage.getItem('token');
-            const { data } = await getIngredientsByFilters(userId, category, location, confection);
+            let category1 = category === '' ? 'all' : category;
+            let location1 = location === '' ? 'all' : location;
+            let confection1 = confection === '' ? 'all' : confection;
+
+            const { data } = await getIngredientsByFilters(userId, category1, location1, confection1);
             const allIngredients = data.map(item => {
                 item.expirationDate = GetSqlDate(new Date(item.expirationDate));
                 return item;
