@@ -56,6 +56,13 @@ function Home(props) {
             console.log("Error All ingredients: ", error)
         }
         setActivityIndic(false);
+
+        // setTimeout(() => {
+        //     console.log("hi: ", ingredients.length)
+        //     if (ingredients.length == 0) {
+        //         getIngredients();
+        //     }
+        // }, 2000)
     }
 
     useEffect(() => {
@@ -111,7 +118,7 @@ function Home(props) {
                             style={{ marginTop: RFPercentage(3) }}
                             showsVerticalScrollIndicator={false}
                             numColumns={2}
-                            data={ingredients}
+                            data={ingredients.length === 0 ? [{ blank: true }] : ingredients}
                             keyExtractor={(item, index) => item.id}
                             renderItem={({ item, i }) =>
                                 <TouchableOpacity onPress={() => props.navigation.navigate('ingredientDetails', { item: item })} activeOpacity={0.9} style={{
@@ -119,20 +126,21 @@ function Home(props) {
                                     marginBottom: RFPercentage(1.5),
                                     marginRight: RFPercentage(2),
                                     backgroundColor: "white",
-                                    // backgroundColor: (item.id % 2 == 0) ? colors.primary : "white",
+                                    maxHeight: item.blank ? 0 : null,
                                     shadowColor: '#b5b5b5',
                                     shadowOffset: { width: 0, height: 0 },
                                     shadowOpacity: 0.8,
                                     shadowRadius: 3,
                                     elevation: 7,
-
                                     borderRadius: RFPercentage(2),
                                     width: RFPercentage(20), height: RFPercentage(14),
                                     alignItems: "center",
                                     justifyContent: "center",
                                     flexDirection: "column",
                                 }} >
-                                    <Card index={i} title={item.name} confectionType={item.confectionType} expirationDate={item.expirationDate} location={item.location} category={item.category} />
+                                    {item.blank ? null :
+                                        <Card index={i} title={item.name} confectionType={item.confectionType} expirationDate={item.expirationDate} location={item.location} category={item.category} />
+                                    }
                                 </TouchableOpacity>
 
                             }
