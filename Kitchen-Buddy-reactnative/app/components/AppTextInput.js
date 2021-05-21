@@ -32,14 +32,14 @@ function AppTextInput({ rightIcon = false, rightFunction, borderWidth = 0, place
                     onSubmitEditing={endEdit}
                 />
                 {rightButtonText ?
-                    <TouchableOpacity style={{ width: "20%" }}>
+                    <TouchableOpacity key={1} style={{ width: "20%" }}>
                         <Text style={{ fontWeight: Platform.OS === "ios" ? "500" : "bold", color: colors.primary, fontSize: RFPercentage(2) }} >{rightButtonText}</Text>
                     </TouchableOpacity>
                     : null}
 
                 {rightIcon ?
-                    <TouchableOpacity onPress={() => rightFunction()} style={{ width: "10%", justifyContent: "center", alignItems: "center" }} >
-                        <MaterialCommunityIcons color={colors.grey} style={{ right: RFPercentage(1) }} size={RFPercentage(3)} name={rightIcon} />
+                    <TouchableOpacity key={'2'} onPress={() => rightFunction()} style={{ width: "10%", justifyContent: "center", alignItems: "center" }} >
+                        <MaterialCommunityIcons key={'3'} color={colors.grey} style={{ right: RFPercentage(1) }} size={RFPercentage(3)} name={rightIcon} />
                     </TouchableOpacity>
                     : null
                 }

@@ -28,6 +28,16 @@ function Home(props) {
         getIngredients();
     }, []);
 
+    const handleSearch = () => {
+        let temp = [...oldIngredients];
+        let newIngredients = temp.map((ingredient) => {
+            if (ingredient.name.includes(searchValue)) {
+                return ingredient;
+            }
+        })
+        setIngredients(newIngredients);
+    }
+
     const getIngredients = async () => {
         try {
             setActivityIndic(true)
@@ -66,7 +76,7 @@ function Home(props) {
                                 value={searchValue}
                                 onChange={(text) => setSearchValue(text)}
                                 rightIcon="magnify"
-                                rightFunction={() => console.log("jh")}
+                                rightFunction={() => handleSearch()}
                             />
                         </View>
                     </View>
@@ -91,12 +101,11 @@ function Home(props) {
                             numColumns={2}
                             data={ingredients}
                             keyExtractor={(item, index) => item.id}
-                            renderItem={({ item }) =>
+                            renderItem={({ item, i }) =>
                                 <TouchableOpacity onPress={() => props.navigation.navigate('ingredientDetails', { item: item })} activeOpacity={0.9} style={{
                                     margin: RFPercentage(1),
                                     marginBottom: RFPercentage(1.5),
                                     marginRight: RFPercentage(2),
-
                                     backgroundColor: "white",
                                     // backgroundColor: (item.id % 2 == 0) ? colors.primary : "white",
                                     shadowColor: '#b5b5b5',
@@ -111,7 +120,7 @@ function Home(props) {
                                     justifyContent: "center",
                                     flexDirection: "column",
                                 }} >
-                                    <Card title={item.name} confectionType={item.confectionType} expirationDate={item.expirationDate} location={item.location} category={item.category} />
+                                    <Card index={i} title={item.name} confectionType={item.confectionType} expirationDate={item.expirationDate} location={item.location} category={item.category} />
                                 </TouchableOpacity>
 
                             }

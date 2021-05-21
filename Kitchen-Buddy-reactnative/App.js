@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, LogBox } from 'react-native';
 import { RFPercentage } from "react-native-responsive-fontsize"
 import AnimatedSplash from "react-native-animated-splash-screen";
 import { createDrawerNavigator } from "@react-navigation/drawer"
@@ -28,6 +28,7 @@ import Categories from './app/screens/Categories';
 
 const Stack = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
+LogBox.ignoreAllLogs(true)
 
 export default function App() {
 

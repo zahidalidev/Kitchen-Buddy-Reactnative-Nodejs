@@ -6,10 +6,10 @@ import Constants from 'expo-constants'
 
 import colors from '../config/colors';
 
-function Card({ title, confectionType, expirationDate, location, category }) {
+function Card({ index, title, confectionType, expirationDate, location, category }) {
 
     return (
-        <View style={{ padding: RFPercentage(2), flex: 1, width: "100%", flexDirection: "column", alignItems: "flex-start", justifyContent: "center" }} >
+        <View key={index} style={{ padding: RFPercentage(2), flex: 1, width: "100%", flexDirection: "column", alignItems: "flex-start", justifyContent: "center" }} >
 
             <View style={{ position: "absolute", right: 0, top: 0 }} >
                 <Text numberOfLines={1} style={{ borderTopRightRadius: RFPercentage(1.5), borderBottomLeftRadius: RFPercentage(1.5), backgroundColor: "green", padding: RFPercentage(1), color: colors.white }} >{confectionType}</Text>
