@@ -14,7 +14,6 @@ import { createDrawerNavigator } from "@react-navigation/drawer"
 import { NavigationContainer } from "@react-navigation/native"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Foundation } from "@expo/vector-icons"
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from './app/config/colors';
 import Login from './app/screens/Login';
@@ -30,7 +29,7 @@ import Categories from './app/screens/Categories';
 const Stack = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function App(props) {
+export default function App() {
 
   const [isReady, setIsReady] = useState(false)
 

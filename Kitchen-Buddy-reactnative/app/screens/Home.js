@@ -18,6 +18,7 @@ const windowHeight = Dimensions.get('window').height;
 function Home(props) {
     const [searchValue, setSearchValue] = useState('');
     const [ingredients, setIngredients] = useState([]);
+    const [oldIngredients, setOldIngredients] = useState([]);
     const [activityIndic, setActivityIndic] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
 
@@ -37,6 +38,7 @@ function Home(props) {
                 return item;
             })
             setIngredients(allIngredients);
+            setOldIngredients(allIngredients);
             setRefreshing(false)
         } catch (error) {
             console.log("Error All ingredients: ", error)
@@ -63,7 +65,8 @@ function Home(props) {
                                 width="100%"
                                 value={searchValue}
                                 onChange={(text) => setSearchValue(text)}
-                                icon="magnify"
+                                rightIcon="magnify"
+                                rightFunction={() => console.log("jh")}
                             />
                         </View>
                     </View>

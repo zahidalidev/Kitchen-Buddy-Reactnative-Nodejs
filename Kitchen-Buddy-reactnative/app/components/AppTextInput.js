@@ -4,7 +4,7 @@ import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import colors from "../config/colors"
 
-function AppTextInput({ borderWidth = 0, placeHolder, value, onChange, width = "100%", height = RFPercentage(6.2), icon, fontWeight, rightButtonText, secure = false, iconType = "MaterialCommunityIcons", editable = true, startEdit, endEdit, border = false }) {
+function AppTextInput({ rightIcon = false, rightFunction, borderWidth = 0, placeHolder, value, onChange, width = "100%", height = RFPercentage(6.2), icon, fontWeight, rightButtonText, secure = false, iconType = "MaterialCommunityIcons", editable = true, startEdit, endEdit, border = false }) {
     const [focus, setFocus] = useState(false)
 
     return (
@@ -20,7 +20,7 @@ function AppTextInput({ borderWidth = 0, placeHolder, value, onChange, width = "
                     <MaterialCommunityIcons color={colors.mediumGrey} style={{ padding: RFPercentage(1), paddingRight: 0 }} size={RFPercentage(3)} name={icon} />
                 }
 
-                <TextInput style={{ color: colors.grey, padding: RFPercentage(1), width: rightButtonText ? "70%" : "90%", fontSize: RFPercentage(2.2) }}
+                <TextInput style={{ color: colors.grey, padding: RFPercentage(1), width: rightButtonText ? "70%" : "90%", width: rightIcon ? "80%" : "90%", fontSize: RFPercentage(2.2) }}
                     placeholder={placeHolder}
                     onFocus={() => setFocus(true)} s
                     onEndEditing={() => setFocus(false)}
@@ -36,6 +36,13 @@ function AppTextInput({ borderWidth = 0, placeHolder, value, onChange, width = "
                         <Text style={{ fontWeight: Platform.OS === "ios" ? "500" : "bold", color: colors.primary, fontSize: RFPercentage(2) }} >{rightButtonText}</Text>
                     </TouchableOpacity>
                     : null}
+
+                {rightIcon ?
+                    <TouchableOpacity onPress={() => rightFunction()} style={{ width: "10%", justifyContent: "center", alignItems: "center" }} >
+                        <MaterialCommunityIcons color={colors.grey} style={{ right: RFPercentage(1) }} size={RFPercentage(3)} name={rightIcon} />
+                    </TouchableOpacity>
+                    : null
+                }
             </View>
         </View>
     );
