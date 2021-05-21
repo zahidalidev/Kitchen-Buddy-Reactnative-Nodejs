@@ -75,10 +75,10 @@ function SignUp(props) {
         try {
             await registerUser(body);
             setIndicator(false);
+            toastify.success("Registration Successful");
             setTimeout(() => {
-                toastify.success("Registration Successful");
+                props.navigation.navigate('login')
             }, 2000)
-            props.navigation.navigate('login')
         } catch (error) {
             toastify.error("Registration Failed");
             setIndicator(false);
