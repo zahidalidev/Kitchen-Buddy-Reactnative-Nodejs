@@ -5,6 +5,7 @@ import Constants from 'expo-constants'
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { MaterialIcons } from "@expo/vector-icons"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 
 import colors from '../config/colors';
 import Card from '../components/Card';
@@ -56,6 +57,7 @@ function ExpireSoon(props) {
             {/* Top container */}
             {/* Kitchen buddy top container */}
             <View style={{ backgroundColor: colors.primary, height: RFPercentage(16), width: "100%", flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
+                <MaterialCommunityIcons onPress={() => props.navigation.navigate('Home')} style={{ position: "absolute", top: RFPercentage(2.5), left: RFPercentage(2), opacity: 0.8 }} name="chevron-left" size={RFPercentage(4)} color={colors.lightGrey} />
                 <Text style={{ top: RFPercentage(2), color: colors.white, fontSize: Platform.OS === "ios" ? RFPercentage(2.5) : RFPercentage(4.5) }} >Expire Soon</Text>
             </View>
 

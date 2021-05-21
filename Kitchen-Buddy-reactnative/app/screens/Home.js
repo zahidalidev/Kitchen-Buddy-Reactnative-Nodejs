@@ -3,6 +3,7 @@ import { RefreshControl, ActivityIndicator, Dimensions, FlatList, ImageBackgroun
 import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants'
 import { RFPercentage } from 'react-native-responsive-fontsize';
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 
 import AppTextInput from '../components/AppTextInput';
 import colors from '../config/colors';
@@ -11,6 +12,7 @@ import Card from '../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAllIngredients } from "../services/ingredientsService";
 import GetSqlDate from '../components/commmon/GetSqlDate';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -60,6 +62,15 @@ function Home(props) {
         getIngredients();
     }, []);
 
+    const handleLogout = async () => {
+        try {
+            await AsyncStorage.removeItem('token');
+            props.navigation.navigate('login')
+        } catch (error) {
+            alert("Logout Error")
+        }
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar style="light" backgroundColor={colors.primary} />
@@ -67,6 +78,7 @@ function Home(props) {
             {/* Top container */}
             <View style={{ backgroundColor: colors.primary, height: RFPercentage(28), justifyContent: 'flex-end' }} >
                 <ImageBackground style={{ marginBottom: RFPercentage(1), width: windowWidth, height: RFPercentage(30), alignItems: 'center', justifyContent: 'flex-end' }} source={banner} >
+                    <MaterialCommunityIcons onPress={() => handleLogout()} style={{ position: "absolute", top: RFPercentage(4), right: RFPercentage(2), opacity: 0.8 }} name="exit-to-app" size={RFPercentage(3)} color={colors.lightGrey} />
                     <View style={{ flexDirection: 'column' }} >
                         {/* Search feilds */}
                         <View style={{ width: "85%", bottom: RFPercentage(7.5) }} >
