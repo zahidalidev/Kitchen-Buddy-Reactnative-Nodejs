@@ -16,6 +16,7 @@ import GetSqlDate from "../components/commmon/GetSqlDate"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AddIngredient } from '../services/ingredientsService';
 import { getProductDetails } from '../services/productService';
+import { getCategories, getLocations, getConfectionTypes } from '../services/otherServices';
 
 function BarcodeAddIngredients(props) {
     const [Toastify, setToastify] = useState();
@@ -29,6 +30,9 @@ function BarcodeAddIngredients(props) {
     const [frozen, setFrozen] = useState('')
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
+    const [categoryList, setCategoryList] = useState([{ label: "", value: "" }])
+    const [locationList, setLocationList] = useState([{ label: "", value: "" }])
+    const [confectionList, setConfectionList] = useState([{ label: "", value: "" }])
 
     // date
     const [date, setDate] = useState(new Date());
@@ -45,13 +49,89 @@ function BarcodeAddIngredients(props) {
         setHasPermission(status === 'granted');
     }
 
-    const handleBarCodeScanned = ({ type, data }) => {
+    const handleBarCodeScanned = async ({ type, data }) => {
         setScanned(true);
         alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+
+        try {
+            const { data: detail } = await getProductDetails(data);
+
+            if (typeof (detail.product.generic_name) != undefined) {
+                setName(detail.product.generic_name)
+            }
+
+            if (detail.product.brands != undefined) {
+                setBrandName(detail.product.brands)
+            }
+
+            if (detail.product.categories != undefined) {
+                let categoriesTags = detail.product.categories.split(',');
+                let newCategory = categoriesTags[0];
+
+                setCategoryList([...categoryList, { label: newCategory, value: newCategory }])
+                setCategory(newCategory);
+            }
+
+            // extracting and validating date
+            if (detail.product.expiration_date != undefined) {
+                let expiNewDate = new Date(detail.product.expiration_date);
+                let isValid = expiNewDate.getTime()
+                if (isValid) {
+                    setDate(expiNewDate)
+                }
+            }
+
+        } catch (error) {
+            console.log("bar code product error: ", error);
+            Toastify.error("Error in extracting product details")
+        }
     };
+
+
+    const allCategories = async () => {
+        try {
+            const { data } = await getCategories();
+            let list = data.map(item => {
+                return { label: item.name, value: item.name };
+            })
+            setCategoryList(list);
+        } catch (error) {
+            console.log(error)
+            // Toastify.error('Error in getting categories');
+        }
+    }
+
+    const allLocations = async () => {
+        try {
+            const { data } = await getLocations();
+            let list = data.map(item => {
+                return { label: item.name, value: item.name };
+            })
+            setLocationList(list);
+        } catch (error) {
+            console.log(error)
+            // Toastify.error('Error in getting categories');
+        }
+    }
+
+    const allConfectionTypes = async () => {
+        try {
+            const { data } = await getConfectionTypes();
+            let list = data.map(item => {
+                return { label: item.name, value: item.name };
+            })
+            setConfectionList(list);
+        } catch (error) {
+            console.log(error)
+            // Toastify.error('Error in getting categories');
+        }
+    }
 
     useEffect(() => {
         getPermission();
+        allCategories();
+        allLocations();
+        allConfectionTypes();
         setScanned(false);
     }, [])
 
@@ -90,30 +170,6 @@ function BarcodeAddIngredients(props) {
         }
     }
 
-    const categoryList = [
-        { label: "fruit", value: "fruit" },
-        { label: "vegetable", value: "vegetable" },
-        { label: "dairy", value: "dairy" },
-        { label: "fish", value: "fish" },
-        { label: "meat", value: "meat" },
-        { label: "liquid", value: "liquid" },
-        { label: "other", value: "other" }
-    ];
-
-    const locationList = [
-        { label: "fridge", value: "fridge" },
-        { label: "freezer", value: "freezer" },
-        { label: "pantry", value: "pantry" },
-        { label: "other", value: "other" }
-    ];
-
-    const confectionList = [
-        { label: "fresh", value: "fresh" },
-        { label: "canned", value: "canned" },
-        { label: "frozen", value: "frozen" },
-        { label: "cured", value: "cured" },
-        { label: "other", value: "other" }
-    ];
     const openPackedList = [
         { label: "packed", value: "packed" },
         { label: "open", value: "open" },
@@ -137,6 +193,14 @@ function BarcodeAddIngredients(props) {
         />
     }
 
+
+    if (hasPermission === null) {
+        return <Text>Requesting for camera permission</Text>;
+    }
+    if (hasPermission === false) {
+        return <Text>No access to camera</Text>;
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar style="light" backgroundColor={colors.primary} />
@@ -144,193 +208,207 @@ function BarcodeAddIngredients(props) {
             <Toast ref={(t) => setToastify(t)} />
 
             {/* Kitchen buddy top container */}
-            <View style={{ backgroundColor: colors.primary, height: RFPercentage(16), width: "100%", flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
-                <Text style={{ top: RFPercentage(2), color: colors.white, fontSize: Platform.OS === "ios" ? RFPercentage(2.5) : RFPercentage(4.5) }} >Add Ingredients</Text>
-            </View>
 
-            {/* Bottom Contaienr */}
-            <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 2, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
-                <ScrollView style={{ width: "100%", marginLeft: "15%", marginTop: RFPercentage(2), }} >
-                    <View style={{ flexDirection: "column", marginTop: RFPercentage(6), width: "85%" }} >
-                        <View style={{ paddingBottom: RFPercentage(1.2) }} >
-                            <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Name of Ingredient*</Text>
-                        </View>
-                        <AppTextInput
-                            placeHolder="Name"
-                            width="100%"
-                            value={name}
-                            onChange={(text) => setName(text)}
-                            borderWidth={1}
-                            height={RFPercentage(6)}
-                        />
-                    </View>
-                    <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
-                        <View style={{ paddingBottom: RFPercentage(1.2) }} >
-                            <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Brand of Ingredient</Text>
-                        </View>
-                        <AppTextInput
-                            placeHolder="Brand"
-                            width="100%"
-                            value={brandName}
-                            onChange={(text) => setBrandName(text)}
-                            borderWidth={1}
-                            height={RFPercentage(6)}
-                        />
-                    </View>
+            {!scanned ? <View style={styles.container}>
+                <BarCodeScanner
+                    onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                    style={StyleSheet.absoluteFillObject}
+                />
+                {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+            </View> : <>
 
-                    {/* drop down Category */}
-                    <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
-                        <View style={{ paddingBottom: RFPercentage(1.2) }} >
-                            <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Category</Text>
-                        </View>
-                        <ReactNativeCrossPicker
-                            placeHolderSize={RFPercentage(2.2)}
-                            modalTextStyle={{ color: colors.primary }}
-                            mainComponentStyle={{ borderColor: colors.primary, borderWidth: 1 }}
-                            iconComponent={iconCategory}
-                            items={categoryList}
-                            setItem={setCategory} selectedItem={category}
-                            placeholder="Select Category" modalMarginTop={RFPercentage(47)}
-                        />
-                    </View>
+                <View style={{ backgroundColor: colors.primary, height: RFPercentage(16), width: "100%", flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
+                    <Text style={{ top: RFPercentage(2), color: colors.white, fontSize: Platform.OS === "ios" ? RFPercentage(2.5) : RFPercentage(4.5) }} >Add Ingredients</Text>
+                </View>
 
-                    {/* drop down location */}
-                    <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
-                        <View style={{ paddingBottom: RFPercentage(1.2) }} >
-                            <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Location</Text>
+                {/* Bottom Contaienr */}
+                <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 2, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
+                    <ScrollView style={{ width: "100%", marginLeft: "15%", marginTop: RFPercentage(2), }} >
+                        <View style={{ flexDirection: "column", marginTop: RFPercentage(6), width: "85%" }} >
+                            <View style={{ paddingBottom: RFPercentage(1.2) }} >
+                                <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Name of Ingredient*</Text>
+                            </View>
+                            <AppTextInput
+                                placeHolder="Name"
+                                width="100%"
+                                value={name}
+                                onChange={(text) => setName(text)}
+                                borderWidth={1}
+                                height={RFPercentage(6)}
+                            />
                         </View>
-                        <ReactNativeCrossPicker
-                            placeHolderSize={RFPercentage(2.2)}
-                            modalTextStyle={{ color: colors.primary }}
-                            mainComponentStyle={{ height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
-                            iconComponent={iconCategory}
-                            items={locationList}
-                            setItem={setLocation} selectedItem={location}
-                            placeholder="Select Location" modalMarginTop={RFPercentage(57)}
-                        />
-                    </View>
-
-                    {/* drop down confection */}
-                    <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
-                        <View style={{ paddingBottom: RFPercentage(1.2) }} >
-                            <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Confection type</Text>
-                        </View>
-                        <ReactNativeCrossPicker
-                            placeHolderSize={RFPercentage(2.2)}
-                            modalTextStyle={{ color: colors.primary }}
-                            mainComponentStyle={{ height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
-                            iconComponent={iconCategory}
-                            items={confectionList}
-                            setItem={setConfection} selectedItem={confection}
-                            placeholder="Select Confection" modalMarginTop={RFPercentage(67)}
-                        />
-                    </View>
-
-                    {/* drop down Ripeness */}
-                    {confection === "fresh" ?
                         <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
                             <View style={{ paddingBottom: RFPercentage(1.2) }} >
-                                <Text style={{ marginLeft: "10%", fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Ripeness</Text>
+                                <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Brand of Ingredient</Text>
+                            </View>
+                            <AppTextInput
+                                placeHolder="Brand"
+                                width="100%"
+                                value={brandName}
+                                onChange={(text) => setBrandName(text)}
+                                borderWidth={1}
+                                height={RFPercentage(6)}
+                            />
+                        </View>
+
+                        {/* drop down Category */}
+                        <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
+                            <View style={{ paddingBottom: RFPercentage(1.2) }} >
+                                <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Category</Text>
                             </View>
                             <ReactNativeCrossPicker
                                 placeHolderSize={RFPercentage(2.2)}
                                 modalTextStyle={{ color: colors.primary }}
-                                mainComponentStyle={{ marginLeft: "10%", height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
+                                mainComponentStyle={{ borderColor: colors.primary, borderWidth: 1 }}
                                 iconComponent={iconCategory}
-                                items={ripenessList} width={"90%"}
-                                setItem={setRipeness} selectedItem={ripeness}
-                                placeholder="Select Confection" modalMarginTop={RFPercentage(67)}
+                                items={categoryList}
+                                setItem={setCategory} selectedItem={category}
+                                placeholder="Select Category" modalMarginTop={RFPercentage(47)}
                             />
-                        </View> : null
-                    }
+                        </View>
 
-                    {/* drop down Frozen or not */}
-                    {confection === "fresh" ?
+                        {/* drop down location */}
                         <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
                             <View style={{ paddingBottom: RFPercentage(1.2) }} >
-                                <Text style={{ marginLeft: "10%", fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Frozen or Not</Text>
+                                <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Location</Text>
                             </View>
                             <ReactNativeCrossPicker
                                 placeHolderSize={RFPercentage(2.2)}
                                 modalTextStyle={{ color: colors.primary }}
-                                mainComponentStyle={{ marginLeft: "10%", height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
+                                mainComponentStyle={{ height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
                                 iconComponent={iconCategory}
-                                items={frozenList} width={"90%"}
-                                setItem={setFrozen} selectedItem={frozen}
+                                items={locationList}
+                                setItem={setLocation} selectedItem={location}
+                                placeholder="Select Location" modalMarginTop={RFPercentage(57)}
+                            />
+                        </View>
+
+                        {/* drop down confection */}
+                        <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
+                            <View style={{ paddingBottom: RFPercentage(1.2) }} >
+                                <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Confection type</Text>
+                            </View>
+                            <ReactNativeCrossPicker
+                                placeHolderSize={RFPercentage(2.2)}
+                                modalTextStyle={{ color: colors.primary }}
+                                mainComponentStyle={{ height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
+                                iconComponent={iconCategory}
+                                items={confectionList}
+                                setItem={setConfection} selectedItem={confection}
                                 placeholder="Select Confection" modalMarginTop={RFPercentage(67)}
                             />
-                        </View> : null
-                    }
-
-                    {/* drop down open/packed */}
-                    <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
-                        <View style={{ paddingBottom: RFPercentage(1.2) }} >
-                            <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Open/Packed</Text>
-                        </View>
-                        <ReactNativeCrossPicker
-                            placeHolderSize={RFPercentage(2.2)}
-                            modalTextStyle={{ color: colors.primary }}
-                            mainComponentStyle={{ height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
-                            iconComponent={iconCategory}
-                            items={openPackedList}
-                            setItem={setOpenPacked} selectedItem={openPacked}
-                            placeholder="Select Confection" modalMarginTop={RFPercentage(77)}
-                        />
-                    </View>
-
-                    {/* dateTimePicker component */}
-                    <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
-                        <View style={{ paddingBottom: RFPercentage(1.2) }} >
-                            <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Select Expiration Date</Text>
                         </View>
 
-                        <View>
-                            <View style={{ borderColor: colors.primary, borderWidth: 1, padding: RFPercentage(1.4), paddingRight: 0, borderRadius: RFPercentage(1), width: "100%", height: RFPercentage(6), flexDirection: "row", justifyContent: "center", alignItems: "center" }} >
-                                <TouchableOpacity style={{ width: Platform.OS === "ios" ? "80%" : "100%" }} onPress={() => setShow(true)}>
-                                    <Text style={{ fontSize: RFPercentage(2.2), color: colors.grey, width: "100%" }} >{date.toDateString()}</Text>
-                                </TouchableOpacity>
-                                {Platform.OS === "ios" ?
-                                    <TouchableOpacity style={{ width: "20%" }} onPress={() => setShow(true)}>
-                                        <Text onPress={() => setShow(false)} style={{ fontSize: RFPercentage(2.2), color: colors.primary, width: "100%" }} >Done</Text>
+                        {/* drop down Ripeness */}
+                        {confection === "fresh" ?
+                            <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
+                                <View style={{ paddingBottom: RFPercentage(1.2) }} >
+                                    <Text style={{ marginLeft: "10%", fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Ripeness</Text>
+                                </View>
+                                <ReactNativeCrossPicker
+                                    placeHolderSize={RFPercentage(2.2)}
+                                    modalTextStyle={{ color: colors.primary }}
+                                    mainComponentStyle={{ marginLeft: "10%", height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
+                                    iconComponent={iconCategory}
+                                    items={ripenessList} width={"90%"}
+                                    setItem={setRipeness} selectedItem={ripeness}
+                                    placeholder="Select Confection" modalMarginTop={RFPercentage(67)}
+                                />
+                            </View> : null
+                        }
+
+                        {/* drop down Frozen or not */}
+                        {confection === "fresh" ?
+                            <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
+                                <View style={{ paddingBottom: RFPercentage(1.2) }} >
+                                    <Text style={{ marginLeft: "10%", fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Frozen or Not</Text>
+                                </View>
+                                <ReactNativeCrossPicker
+                                    placeHolderSize={RFPercentage(2.2)}
+                                    modalTextStyle={{ color: colors.primary }}
+                                    mainComponentStyle={{ marginLeft: "10%", height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
+                                    iconComponent={iconCategory}
+                                    items={frozenList} width={"90%"}
+                                    setItem={setFrozen} selectedItem={frozen}
+                                    placeholder="Select Confection" modalMarginTop={RFPercentage(67)}
+                                />
+                            </View> : null
+                        }
+
+                        {/* drop down open/packed */}
+                        <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
+                            <View style={{ paddingBottom: RFPercentage(1.2) }} >
+                                <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Choose Open/Packed</Text>
+                            </View>
+                            <ReactNativeCrossPicker
+                                placeHolderSize={RFPercentage(2.2)}
+                                modalTextStyle={{ color: colors.primary }}
+                                mainComponentStyle={{ height: RFPercentage(6), borderColor: colors.primary, borderWidth: 1 }}
+                                iconComponent={iconCategory}
+                                items={openPackedList}
+                                setItem={setOpenPacked} selectedItem={openPacked}
+                                placeholder="Select Confection" modalMarginTop={RFPercentage(77)}
+                            />
+                        </View>
+
+                        {/* dateTimePicker component */}
+                        <View style={{ flexDirection: "column", marginTop: RFPercentage(2), width: "85%" }} >
+                            <View style={{ paddingBottom: RFPercentage(1.2) }} >
+                                <Text style={{ fontSize: RFPercentage(2.2), color: colors.primaryLight }} >Select Expiration Date</Text>
+                            </View>
+
+                            <View>
+                                <View style={{ borderColor: colors.primary, borderWidth: 1, padding: RFPercentage(1.4), paddingRight: 0, borderRadius: RFPercentage(1), width: "100%", height: RFPercentage(6), flexDirection: "row", justifyContent: "center", alignItems: "center" }} >
+                                    <TouchableOpacity style={{ width: Platform.OS === "ios" ? "80%" : "100%" }} onPress={() => setShow(true)}>
+                                        <Text style={{ fontSize: RFPercentage(2.2), color: colors.grey, width: "100%" }} >{date.toDateString()}</Text>
                                     </TouchableOpacity>
-                                    : null
-                                }
+                                    {Platform.OS === "ios" ?
+                                        <TouchableOpacity style={{ width: "20%" }} onPress={() => setShow(true)}>
+                                            <Text onPress={() => setShow(false)} style={{ fontSize: RFPercentage(2.2), color: colors.primary, width: "100%" }} >Done</Text>
+                                        </TouchableOpacity>
+                                        : null
+                                    }
+                                </View>
+
                             </View>
-
+                            {show && (
+                                <DateTimePicker
+                                    style={{ width: 320, backgroundColor: "white" }}
+                                    testID="dateTimePicker"
+                                    value={date}
+                                    mode={"date"}
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={onChange}
+                                />
+                            )}
                         </View>
-                        {show && (
-                            <DateTimePicker
-                                style={{ width: 320, backgroundColor: "white" }}
-                                testID="dateTimePicker"
-                                value={date}
-                                mode={"date"}
-                                is24Hour={true}
-                                display="default"
-                                onChange={onChange}
+
+                        {/* Add button */}
+                        <View style={{ marginBottom: RFPercentage(3), flexDirection: "row", marginTop: RFPercentage(3), width: "85%", flex: 1, alignItems: "flex-end", justifyContent: "space-around" }} >
+                            <AppTextButton
+                                name="Add Ingredient"
+                                borderRadius={RFPercentage(1.3)}
+                                onSubmit={() => handleSubmit()}
+                                backgroundColor={colors.primary}
+                                width="48%"
+                                height={RFPercentage(5.5)}
                             />
-                        )}
-                    </View>
 
-                    {/* Add button */}
-                    <View style={{ marginBottom: RFPercentage(3), marginTop: RFPercentage(3), width: "85%", flex: 1, alignItems: "flex-end" }} >
-                        <AppTextButton
-                            name="Add Ingredient"
-                            borderRadius={RFPercentage(1.3)}
-                            onSubmit={() => handleSubmit()}
-                            backgroundColor={colors.primary}
-                            width="100%"
-                            height={RFPercentage(5.5)}
-                        />
-                    </View>
-
-                    <BarCodeScanner
-                        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-                        style={StyleSheet.absoluteFillObject}
-                    />
-                    {scanned && <AppTextButton name='Tap to Scan Again' backgroundColor={colors.primary} onSubmit={() => setScanned(false)} />}
-
-                </ScrollView>
-            </View>
+                            {/* scan button */}
+                            <AppTextButton
+                                name="Scan Barcode"
+                                borderRadius={RFPercentage(1.3)}
+                                onSubmit={() => setScanned(false)}
+                                backgroundColor={colors.primary}
+                                width="48%"
+                                height={RFPercentage(5.5)}
+                            />
+                        </View>
+                    </ScrollView>
+                </View>
+            </>
+            }
         </View>
     );
 }

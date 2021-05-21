@@ -11,38 +11,59 @@ import AppTextButton from '../components/AppTextButton';
 import GetSqlDate from '../components/commmon/GetSqlDate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getIngredientsByFilters } from "../services/ingredientsService";
+import { getCategories, getLocations, getConfectionTypes } from '../services/otherServices';
 
 function Categories(props) {
     const [activityIndic, setActivityIndic] = useState(false);
     const [ingredients, setIngredients] = useState([]);
-    const [category, setCategory] = useState('')
-    const [location, setLocation] = useState('')
-    const [confection, setConfection] = useState('')
+    const [category, setCategory] = useState('');
+    const [location, setLocation] = useState('');
+    const [confection, setConfection] = useState('');
+    const [categoryList, setCategoryList] = useState([{ label: "", value: "" }]);
+    const [locationList, setLocationList] = useState([{ label: "", value: "" }]);
+    const [confectionList, setConfectionList] = useState([{ label: "", value: "" }]);
 
-    const categoryList = [
-        { label: "fruit", value: "fruit" },
-        { label: "vegetable", value: "vegetable" },
-        { label: "dairy", value: "dairy" },
-        { label: "fish", value: "fish" },
-        { label: "meat", value: "meat" },
-        { label: "liquid", value: "liquid" },
-        { label: "all", value: "all" }
-    ];
+    const allCategories = async () => {
+        try {
+            const { data } = await getCategories();
+            let list = data.map(item => {
+                return { label: item.name, value: item.name };
+            })
+            list = [...list, { label: "all", value: "all" }];
+            setCategoryList(list);
+        } catch (error) {
+            console.log(error)
+            // Toastify.error('Error in getting categories');
+        }
+    }
 
-    const locationList = [
-        { label: "fridge", value: "fridge" },
-        { label: "freezer", value: "freezer" },
-        { label: "pantry", value: "pantry" },
-        { label: "all", value: "all" }
-    ];
+    const allLocations = async () => {
+        try {
+            const { data } = await getLocations();
+            let list = data.map(item => {
+                return { label: item.name, value: item.name };
+            })
+            list = [...list, { label: "all", value: "all" }];
+            setLocationList(list);
+        } catch (error) {
+            console.log(error)
+            // Toastify.error('Error in getting categories');
+        }
+    }
 
-    const confectionList = [
-        { label: "fresh", value: "fresh" },
-        { label: "canned", value: "canned" },
-        { label: "frozen", value: "frozen" },
-        { label: "cured", value: "cured" },
-        { label: "all", value: "all" }
-    ];
+    const allConfectionTypes = async () => {
+        try {
+            const { data } = await getConfectionTypes();
+            let list = data.map(item => {
+                return { label: item.name, value: item.name };
+            })
+            list = [...list, { label: "all", value: "all" }];
+            setConfectionList(list);
+        } catch (error) {
+            console.log(error)
+            // Toastify.error('Error in getting categories');
+        }
+    }
 
     const getIngredients = async () => {
         try {
@@ -67,6 +88,9 @@ function Categories(props) {
 
     useEffect(() => {
         getIngredients();
+        allCategories();
+        allLocations();
+        allConfectionTypes();
     }, []);
 
     return (

@@ -184,10 +184,11 @@ router.post("/:userId", async (req, res) => {
         await conn.connect();
         const request = new sql.Request(conn);
 
-        request.query(`select from category where name='${category}'`, (caError, caResponce) => {
+        request.query(`select name from category where name='${category}'`, (caError, caResponce) => {
             if (caError) {
                 conn.close();
-                return res.status(400).send(error);
+                console.log('hi: ', caError)
+                return res.status(400).send(caError);
             }
 
             if (caResponce.recordset.length == 0) {
@@ -253,10 +254,10 @@ router.put("/:id", async (req, res) => {
         await conn.connect();
         const request = new sql.Request(conn);
 
-        request.query(`select from category where name='${category}'`, (caError, caResponce) => {
+        request.query(`select name from category where name='${category}'`, (caError, caResponce) => {
             if (caError) {
                 conn.close();
-                return res.status(400).send(error);
+                return res.status(400).send(caError);
             }
 
             if (caResponce.recordset.length == 0) {
