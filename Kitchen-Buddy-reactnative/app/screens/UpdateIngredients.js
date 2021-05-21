@@ -265,7 +265,7 @@ function UpdateIngredients(props) {
                                 iconComponent={iconCategory}
                                 items={ripenessList} width={"90%"}
                                 setItem={setRipeness} selectedItem={ripeness}
-                                placeholder="Select Confection" modalMarginTop={RFPercentage(67)}
+                                placeholder="Choose Ripeness" modalMarginTop={RFPercentage(67)}
                             />
                         </View> : null
                     }
@@ -283,7 +283,7 @@ function UpdateIngredients(props) {
                                 iconComponent={iconCategory}
                                 items={frozenList} width={"90%"}
                                 setItem={setFrozen} selectedItem={frozen}
-                                placeholder="Select Confection" modalMarginTop={RFPercentage(67)}
+                                placeholder="Frozen or Not" modalMarginTop={RFPercentage(67)}
                             />
                         </View> : null
                     }

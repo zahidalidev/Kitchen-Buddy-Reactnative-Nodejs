@@ -57,12 +57,6 @@ function Home(props) {
         }
         setActivityIndic(false);
 
-        // setTimeout(() => {
-        //     console.log("hi: ", ingredients.length)
-        //     if (ingredients.length == 0) {
-        //         getIngredients();
-        //     }
-        // }, 2000)
     }
 
     useEffect(() => {
