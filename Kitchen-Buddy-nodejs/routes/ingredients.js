@@ -187,7 +187,6 @@ router.post("/:userId", async (req, res) => {
         request.query(`select name from category where name='${category}'`, (caError, caResponce) => {
             if (caError) {
                 conn.close();
-                console.log('hi: ', caError)
                 return res.status(400).send(caError);
             }
 
@@ -201,17 +200,38 @@ router.post("/:userId", async (req, res) => {
             }
         })
 
-        request.query(`insert into ingredient (name, brandName, category, location, confectionType, 
-            ripeness, ripenessEditedDate, frozen, openClose, expirationDate, userId) 
-            values('${name}', '${brandName}', '${category}', '${location}', '${confectionType}'
-            , '${ripeness}', ${ripenessEditedDate == null ? null : `'${ripenessEditedDate}'`}, '${frozen}', '${openClose}'
-            , '${expirationDate}', '${userId}')`, (error, response) => {
-            conn.close();
-            if (error) {
-                return res.status(400).send(error);
-            }
-            return res.send(response.rowsAffected)
-        })
+
+        if (ripeness != '') {
+            let date = new Date();
+            var pad = function (num) { return ('00' + num).slice(-2) };
+            let lastCheckDate = `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())}`;
+
+            request.query(`insert into ingredient (name, brandName, category, location, confectionType, 
+                ripeness, ripenessEditedDate, frozen, openClose, expirationDate, userId, lastCheckDate) 
+                values('${name}', '${brandName}', '${category}', '${location}', '${confectionType}'
+                , '${ripeness}', ${ripenessEditedDate == null ? null : `'${ripenessEditedDate}'`}, '${frozen}', '${openClose}'
+                , '${expirationDate}', '${userId}', '${lastCheckDate}')`, (error, response) => {
+                conn.close();
+                if (error) {
+                    return res.status(400).send(error);
+                }
+                return res.send(response.rowsAffected);
+            })
+        } else {
+            request.query(`insert into ingredient (name, brandName, category, location, confectionType, 
+                    ripeness, ripenessEditedDate, frozen, openClose, expirationDate, userId) 
+                    values('${name}', '${brandName}', '${category}', '${location}', '${confectionType}'
+                    , '${ripeness}', ${ripenessEditedDate == null ? null : `'${ripenessEditedDate}'`}, '${frozen}', '${openClose}'
+                    , '${expirationDate}', '${userId}')`, (error, response) => {
+                conn.close();
+                if (error) {
+                    return res.status(400).send(error);
+                }
+
+                return res.send(response.rowsAffected);
+            })
+        }
+
 
     } catch (error) {
         conn.close();
@@ -269,7 +289,6 @@ router.put("/:id", async (req, res) => {
                 })
             }
         })
-
         request.query(`UPDATE ingredient SET name='${name}', brandName=${brandName == null ? null : `'${brandName}'`}, category=${category == null ? null : `'${category}'`},
         location=${location == null ? null : `'${location}'`}, confectionType=${confectionType == null ? null : `'${confectionType}'`}, ripeness=${ripeness == null ? null : `'${ripeness}'`}, ripenessEditedDate=${ripenessEditedDate == null ? null : `'${ripenessEditedDate}'`}, 
         frozen=${frozen == null ? null : `'${frozen}'`}, openClose=${openClose == null ? null : `'${openClose}'`}, expirationDate=${expirationDate == null ? null : `'${expirationDate}'`} WHERE id='${id}'`, (error, response) => {

@@ -51,12 +51,11 @@ function Home(props) {
             })
             setIngredients(allIngredients);
             setOldIngredients(allIngredients);
-            setRefreshing(false)
         } catch (error) {
             console.log("Error All ingredients: ", error)
         }
+        setRefreshing(false)
         setActivityIndic(false);
-
     }
 
     useEffect(() => {

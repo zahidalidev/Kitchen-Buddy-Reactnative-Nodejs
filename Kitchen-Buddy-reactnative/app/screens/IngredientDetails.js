@@ -42,7 +42,9 @@ function IngredientDetails(props) {
             let itemDetails = data[0];
             itemDetails.ripenessEditedDate = GetSqlDate(new Date(itemDetails.ripenessEditedDate));
             itemDetails.expirationDate = GetSqlDate(new Date(itemDetails.expirationDate));
-            itemDetails.lastCheckDate = DatesDifference(new Date(itemDetails.lastCheckDate))
+            if (itemDetails.lastCheckDate != null) {
+                itemDetails.lastCheckDate = DatesDifference(new Date(itemDetails.lastCheckDate))
+            }
             setItem(itemDetails);
         } catch (error) {
             console.log("Error in getting details: ", error);
