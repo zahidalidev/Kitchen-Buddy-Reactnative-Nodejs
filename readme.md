@@ -1,4 +1,5 @@
 # **Kitchen Buddy**
+An application to track kitchen ingredients, so that you are: - less likely to have some go-to waste - more likely to buy what is missing The project can feature a variety of extensions,
 
 ## Demo
 
