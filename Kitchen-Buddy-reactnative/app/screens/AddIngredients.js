@@ -85,7 +85,6 @@ function AddIngredients(props) {
             setCategoryList(list);
         } catch (error) {
             console.log(error)
-            // Toastify.error('Error in getting categories');
         }
     }
 
